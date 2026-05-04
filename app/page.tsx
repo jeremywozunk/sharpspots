@@ -1,16 +1,18 @@
 import client from './contentful';
+import Link from 'next/link';
 
 interface GamePick {
   sys: { id: string };
   fields: {
     title: string;
+    slug: string;
     league: string;
-    recommended_play: string;
-    line: string;
-    ev_percentage: string;
-    game_time: string;
+    teams: string[];
+    playToLine: string;
+    evPercentage: string;
+    gameDate: string;
     confidenceScore: number;
-    analysis_para_1: string;
+    analysisParagraph1: any;
   };
 }
 
@@ -24,10 +26,33 @@ function StarRating({ score }: { score: number }) {
   );
 }
 
-function getTeaser(text: string): string {
-  if (!text) return '';
+function getTeaserFromRichText(richText: any): string {
+  if (!richText?.content) return '';
+  const firstParagraph = richText.content.find((node: any) => node.nodeType === 'paragraph');
+  if (!firstParagraph) return '';
+  const text = firstParagraph.content
+    .filter((node: any) => node.nodeType === 'text')
+    .map((node: any) => node.value)
+    .join('');
   const sentences = text.split('. ');
   return sentences[0] + (sentences.length > 1 ? '.' : '');
+}
+
+function buildGameUrl(pick: GamePick): string {
+  const date = new Date(pick.fields.gameDate);
+  const dateStr = date.toISOString().split('T')[0];
+  const league = pick.fields.league.toLowerCase();
+  return `/${league}/picks/${dateStr}/${pick.fields.slug}`;
+}
+
+function getGameTimeDisplay(gameDate: string): string {
+  if (!gameDate) return '';
+  return new Date(gameDate).toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZone: 'America/New_York',
+    timeZoneName: 'short',
+  });
 }
 
 async function getTopPicks(): Promise<GamePick[]> {
@@ -46,21 +71,6 @@ export default async function Home() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&display=swap');
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: system-ui, -apple-system, sans-serif; background: #fff; color: #111; }
-
-        .topbar { height: 5px; background: linear-gradient(to right, #2d8c3e 50%, #b8860b 50%); }
-
-        .nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; border-bottom: 1px solid #e5e7eb; position: relative; }
-        .logo { display: flex; flex-direction: column; line-height: 0.88; font-family: 'Barlow Condensed', Arial Black, sans-serif; font-weight: 800; font-size: 72px; text-transform: uppercase; letter-spacing: 2px; }
-        .logo .sharp { color: #2d8c3e; }
-        .logo .spots { color: #b8860b; }
-        .nav-links { display: flex; gap: 36px; align-items: center; }
-        .nav-links a { font-size: 16px; color: #111; text-decoration: none; font-weight: 700; }
-        .sports-btn { font-size: 16px; color: #111; background: none; border: none; cursor: pointer; font-family: system-ui; font-weight: 700; padding: 0; }
-        .sports-btn:after { content: ' ▾'; font-size: 12px; }
-
         .hero { padding: 64px 48px 56px; border-bottom: 1px solid #e5e0d5; text-align: center; background: #f9f6f0; }
         .hero h1 { font-size: 36px; font-weight: 500; line-height: 1.35; margin-bottom: 14px; color: #111; }
         .hero h1 em { font-style: normal; color: #2d8c3e; }
@@ -70,7 +80,7 @@ export default async function Home() {
         .section-label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: #9ca3af; text-transform: uppercase; }
         .parlay-btn { font-size: 16px; font-weight: 700; color: #b8860b; background: #fdf8ee; border: 1.5px solid #d4aa50; border-radius: 30px; padding: 12px 32px; cursor: pointer; text-decoration: none; white-space: nowrap; }
 
-        .card { padding: 20px 48px 20px 44px; border-bottom: 0.5px solid #e5e7eb; border-left: 4px solid #2d8c3e; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; cursor: pointer; transition: background 0.15s; }
+        .card { padding: 20px 48px 20px 44px; border-bottom: 0.5px solid #e5e7eb; border-left: 4px solid #2d8c3e; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; cursor: pointer; transition: background 0.15s; text-decoration: none; color: inherit; }
         .card:hover { background: #f9fafb; }
         .card-left { flex: 1; min-width: 0; }
         .card-league { font-size: 11px; font-weight: 700; color: #2d8c3e; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
@@ -88,17 +98,7 @@ export default async function Home() {
         .step-num { font-size: 13px; font-weight: 700; color: #2d8c3e; margin-bottom: 8px; }
         .step-text { font-size: 15px; color: #374151; line-height: 1.6; }
 
-        .footer { padding: 20px 48px; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
-        .footer-links a { font-size: 12px; color: #9ca3af; text-decoration: none; }
-        .footer-disc { font-size: 11px; color: #9ca3af; }
-
         @media (max-width: 768px) {
-          .nav { padding: 16px 20px; }
-          .logo { font-size: 48px; }
-          .nav-links { gap: 20px; }
-          .nav-links a { font-size: 14px; }
-          .sports-btn { font-size: 14px; }
           .hero { padding: 40px 20px; }
           .hero h1 { font-size: 26px; }
           .hero p { font-size: 15px; }
@@ -107,24 +107,8 @@ export default async function Home() {
           .card-right { align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 10px; }
           .hiw { padding: 32px 20px; }
           .steps { grid-template-columns: 1fr; }
-          .footer { padding: 16px 20px; }
-          .footer-links { gap: 16px; }
         }
       `}</style>
-
-      <div className="topbar" />
-
-      <nav className="nav">
-        <div className="logo">
-          <span className="sharp">SHARP</span>
-          <span className="spots">SPOTS</span>
-        </div>
-        <div className="nav-links">
-          <button className="sports-btn">Sports</button>
-          <a href="/how-it-works">How It Works</a>
-          <a href="/blog">Blog</a>
-        </div>
-      </nav>
 
       <div className="hero">
         <h1>Smarter bets, backed by <em>real math</em>.<br />Updated every morning.</h1>
@@ -133,7 +117,7 @@ export default async function Home() {
 
       <div className="section-header">
         <div className="section-label">Today's Top Picks</div>
-        <a className="parlay-btn" href="/parlay">🎯 Parlay of the Day</a>
+        <Link className="parlay-btn" href="/parlay">🎯 Parlay of the Day</Link>
       </div>
 
       {picks.length === 0 && (
@@ -143,21 +127,21 @@ export default async function Home() {
       )}
 
       {picks.map((pick) => (
-        <div key={pick.sys.id} className="card">
+        <Link key={pick.sys.id} href={buildGameUrl(pick)} className="card">
           <div className="card-left">
-            <div className="card-league">{pick.fields.league} · {pick.fields.game_time}</div>
+            <div className="card-league">{pick.fields.league} · {getGameTimeDisplay(pick.fields.gameDate)}</div>
             <div className="card-title">{pick.fields.title}</div>
-            {pick.fields.analysis_para_1 && (
-              <div className="card-teaser">{getTeaser(pick.fields.analysis_para_1)}</div>
+            {pick.fields.analysisParagraph1 && (
+              <div className="card-teaser">{getTeaserFromRichText(pick.fields.analysisParagraph1)}</div>
             )}
-            <span className="card-play">{pick.fields.recommended_play} {pick.fields.line}</span>
+            <span className="card-play">{pick.fields.playToLine}</span>
           </div>
           <div className="card-right">
-            <span className="ev-badge">+{pick.fields.ev_percentage} EV</span>
+            <span className="ev-badge">{pick.fields.evPercentage} EV</span>
             <StarRating score={pick.fields.confidenceScore} />
             <span className="view-link">View Analysis →</span>
           </div>
-        </div>
+        </Link>
       ))}
 
       <div className="hiw">
@@ -177,16 +161,6 @@ export default async function Home() {
           </div>
         </div>
       </div>
-
-      <footer className="footer">
-        <div className="footer-links">
-          <a href="/sports">Sports</a>
-          <a href="/how-it-works">How It Works</a>
-          <a href="/blog">Blog</a>
-          <a href="/responsible-gambling">Responsible Gambling</a>
-        </div>
-        <div className="footer-disc">21+ only. Bet responsibly.</div>
-      </footer>
     </>
   );
 }
