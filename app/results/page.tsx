@@ -325,10 +325,12 @@ export default function ResultsPage() {
                         borderRadius: 6,
                         color: '#fff',
                       }}
-                      formatter={(value: number, _name, props) => [
-                        `${value}% ROI (n=${props.payload.n})`,
-                        'Return',
-                      ]}
+                      formatter={(value, _name, props) => {
+                        const v = typeof value === 'number' ? value : 0;
+                        const n =
+                          (props as { payload?: { n?: number } })?.payload?.n ?? 0;
+                        return [`${v}% ROI (n=${n})`, 'Return'];
+                      }}
                     />
                     <Bar dataKey="roi" radius={[4, 4, 0, 0]}>
                       {confData.map((entry, idx) => (
@@ -369,10 +371,12 @@ export default function ResultsPage() {
                         borderRadius: 6,
                         color: '#fff',
                       }}
-                      formatter={(value: number, _name, props) => [
-                        `${value}% (n=${props.payload.n})`,
-                        'Win Rate',
-                      ]}
+                      formatter={(value, _name, props) => {
+                        const v = typeof value === 'number' ? value : 0;
+                        const n =
+                          (props as { payload?: { n?: number } })?.payload?.n ?? 0;
+                        return [`${v}% (n=${n})`, 'Win Rate'];
+                      }}
                     />
                     <Bar dataKey="winRate" radius={[0, 4, 4, 0]} fill="#b8860b" />
                   </BarChart>
