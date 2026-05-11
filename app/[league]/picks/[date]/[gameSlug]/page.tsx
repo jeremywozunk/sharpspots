@@ -121,82 +121,108 @@ export default async function GamePage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
 
-      <main style={{ maxWidth: '800px', margin: '0 auto', padding: '24px 20px', fontFamily: 'Georgia, serif' }}>
-        <nav style={{ fontSize: '14px', color: '#666', marginBottom: '24px' }}>
-          <Link href="/" style={{ color: '#666', textDecoration: 'none' }}>Home</Link>
+      <style>{`
+        .pick-main { max-width: 760px; margin: 0 auto; padding: 48px 24px 24px; }
+        .breadcrumb { font-family: var(--font-ui); font-size: 11px; color: var(--gray-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 32px; }
+        .breadcrumb a { color: var(--gray-muted); text-decoration: none; transition: color 0.15s; }
+        .breadcrumb a:hover { color: var(--jade); }
+        .breadcrumb .crumb-current { color: var(--fg); }
+
+        .pick-header { border-bottom: 1px solid var(--border-subtle); padding-bottom: 28px; margin-bottom: 36px; }
+        .pick-edge-no { font-family: var(--font-ui); font-size: 10px; color: var(--jade); font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 6px; }
+        .pick-meta { font-family: var(--font-ui); font-size: 11px; color: var(--gold); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; }
+        .pick-h1 { font-family: var(--font-display); font-style: italic; font-weight: 900; font-size: 38px; line-height: 1.15; margin: 0 0 22px 0; color: var(--fg); }
+        .pick-badges { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+        .pick-ev-pill { background: transparent; border: 1px solid var(--jade); color: var(--jade); padding: 7px 14px; border-radius: 0; font-family: var(--font-ui); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+        .pick-stars { color: var(--gold); font-size: 18px; letter-spacing: 4px; }
+        .pick-stars-empty { color: var(--star-empty); }
+        .pick-play-tag { background: var(--bg-2); border: 1px solid var(--gray-border); color: var(--fg); padding: 7px 14px; border-radius: 0; font-family: var(--font-ui); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; }
+
+        .pick-card { background: var(--bg-2); border: 1px solid var(--jade); padding: 28px; margin-bottom: 36px; }
+        .pick-card-label { font-family: var(--font-ui); font-size: 10px; color: var(--jade); font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 10px; }
+        .pick-play-stripe { font-family: var(--font-ui); font-weight: 600; font-size: 16px; color: var(--jade); border-top: 2px solid var(--jade); border-bottom: 2px solid var(--jade); padding: 10px 0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px; display: inline-block; }
+        .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 18px; }
+        .metric { }
+        .metric-label { font-family: var(--font-ui); color: var(--gray-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 6px; }
+        .metric-value { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--fg); }
+
+        .pick-prose { font-family: var(--font-prose); font-size: 16px; line-height: 1.75; color: var(--fg); }
+        .pick-prose p { margin: 0 0 22px 0; }
+
+        .pick-footer { border-top: 1px solid var(--border-subtle); padding-top: 28px; margin-top: 48px; font-family: var(--font-ui); font-size: 12px; color: var(--gray-muted); line-height: 1.65; letter-spacing: 0.02em; }
+        .pick-footer strong { color: var(--fg); font-weight: 600; }
+        .pick-footer a { color: var(--gold); }
+
+        @media (max-width: 768px) {
+          .pick-main { padding: 28px 20px 24px; }
+          .pick-h1 { font-size: 28px; }
+          .pick-card { padding: 22px 20px; }
+          .metric-value { font-size: 19px; }
+          .pick-prose { font-size: 14px; line-height: 1.7; }
+        }
+      `}</style>
+
+      <main className="pick-main">
+        <nav className="breadcrumb">
+          <Link href="/">Home</Link>
           {' › '}
-          <Link href={`/${league}`} style={{ color: '#666', textDecoration: 'none' }}>{pick.league}</Link>
+          <Link href={`/${league}`}>{pick.league}</Link>
           {' › '}
           <span>{dateDisplay}</span>
           {' › '}
-          <span style={{ color: '#000' }}>
-            {Array.isArray(pick.teams) ? pick.teams.join(' vs ') : ''}
-          </span>
+          <span className="crumb-current">{pick.teams || ''}</span>
         </nav>
 
-        <header style={{ borderBottom: '2px solid #2d8c3e', paddingBottom: '20px', marginBottom: '32px' }}>
-          <div style={{ fontSize: '13px', color: '#b8860b', fontWeight: 600, letterSpacing: '1px', marginBottom: '8px' }}>
-            {pick.league} · {dateDisplay} · {timeDisplay}
-          </div>
-          <h1 style={{ fontSize: '36px', fontWeight: 800, margin: '0 0 16px 0', fontFamily: 'Barlow Condensed, sans-serif', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-            {pick.title}
-          </h1>
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <span style={{ background: '#2d8c3e', color: '#fff', padding: '6px 14px', borderRadius: '999px', fontSize: '14px', fontWeight: 700 }}>
-              {pick.evPercentage} EV
+        <header className="pick-header">
+          <div className="pick-edge-no">Edge № {String((pick.gameId || 'XXX').slice(-3)).toUpperCase()}</div>
+          <div className="pick-meta">{pick.league} · {dateDisplay} · {timeDisplay}</div>
+          <h1 className="pick-h1">{pick.title}</h1>
+          <div className="pick-badges">
+            <span className="pick-ev-pill">{pick.evPercentage} EV</span>
+            <span className="pick-stars">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <span key={i} className={i < score ? '' : 'pick-stars-empty'}>★</span>
+              ))}
             </span>
-            <span style={{ color: '#b8860b', fontSize: '20px', letterSpacing: '2px' }}>{stars}</span>
-            <span style={{ background: '#000', color: '#fff', padding: '6px 14px', borderRadius: '4px', fontSize: '14px', fontWeight: 600 }}>
-              {pick.playToLine}
-            </span>
+            <span className="pick-play-tag">{pick.playToLine}</span>
           </div>
         </header>
 
-        <section style={{ background: '#f0f7f1', border: '2px solid #2d8c3e', borderRadius: '8px', padding: '24px', marginBottom: '32px' }}>
-          <div style={{ fontSize: '12px', color: '#2d8c3e', fontWeight: 700, letterSpacing: '1px', marginBottom: '8px' }}>THE PICK</div>
-          <div style={{ fontSize: '24px', fontWeight: 800, marginBottom: '16px', fontFamily: 'Barlow Condensed, sans-serif' }}>
-            {pick.playToLine}
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px', fontSize: '14px' }}>
-            <div>
-              <div style={{ color: '#666', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Expected Value</div>
-              <div style={{ fontWeight: 700, fontSize: '18px' }}>{pick.evPercentage}</div>
+        <section className="pick-card">
+          <div className="pick-card-label">The Pick</div>
+          <div className="pick-play-stripe">{pick.playToLine}</div>
+          <div className="metric-grid">
+            <div className="metric">
+              <div className="metric-label">Expected Value</div>
+              <div className="metric-value">{pick.evPercentage}</div>
             </div>
-            <div>
-              <div style={{ color: '#666', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Fair Odds</div>
-              <div style={{ fontWeight: 700, fontSize: '18px' }}>{pick.fairOdds}</div>
+            <div className="metric">
+              <div className="metric-label">Fair Odds</div>
+              <div className="metric-value">{pick.fairOdds}</div>
             </div>
-            <div>
-              <div style={{ color: '#666', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Market Odds</div>
-              <div style={{ fontWeight: 700, fontSize: '18px' }}>{pick.marketOdds}</div>
+            <div className="metric">
+              <div className="metric-label">Market Odds</div>
+              <div className="metric-value">{pick.marketOdds}</div>
             </div>
-            <div>
-              <div style={{ color: '#666', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sportsbook</div>
-              <div style={{ fontWeight: 700, fontSize: '18px' }}>{pick.sportsbook}</div>
+            <div className="metric">
+              <div className="metric-label">Sportsbook</div>
+              <div className="metric-value">{pick.sportsbook}</div>
             </div>
           </div>
         </section>
 
-        <article style={{ fontSize: '17px', lineHeight: 1.7, color: '#222' }}>
-          {pick.analysisParagraph1 && (
-            <div style={{ marginBottom: '24px' }}>
-              {documentToReactComponents(pick.analysisParagraph1)}
-            </div>
-          )}
-          {pick.analysisParagraph2 && (
-            <div style={{ marginBottom: '32px' }}>
-              {documentToReactComponents(pick.analysisParagraph2)}
-            </div>
-          )}
+        <article className="pick-prose">
+          {pick.analysisParagraph1 && documentToReactComponents(pick.analysisParagraph1)}
+          {pick.analysisParagraph2 && documentToReactComponents(pick.analysisParagraph2)}
         </article>
 
-        <footer style={{ borderTop: '1px solid #e5e5e5', paddingTop: '24px', marginTop: '40px', fontSize: '13px', color: '#666', lineHeight: 1.6 }}>
-          <p style={{ margin: '0 0 12px 0' }}>
+        <footer className="pick-footer">
+          <p style={{ marginBottom: 12 }}>
             <strong>Disclaimer:</strong> This analysis is educational and intended to supplement your own thinking. Past performance does not guarantee future results. 21+ only.
           </p>
-          <p style={{ margin: 0 }}>
+          <p>
             Problem gambling? Call <strong>1-800-GAMBLER</strong> or visit{' '}
-            <a href="https://www.ncpg.org" style={{ color: '#b8860b' }}>ncpg.org</a>.
+            <a href="https://www.ncpg.org">ncpg.org</a>.
           </p>
         </footer>
       </main>

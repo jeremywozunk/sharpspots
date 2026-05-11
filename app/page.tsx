@@ -7,7 +7,7 @@ interface GamePick {
     title: string;
     slug: string;
     league: string;
-    teams: string[];
+    teams: string;
     playToLine: string;
     evPercentage: string;
     gameDate: string;
@@ -18,9 +18,11 @@ interface GamePick {
 
 function StarRating({ score }: { score: number }) {
   return (
-    <div style={{ color: '#b8860b', fontSize: 16, letterSpacing: 2 }}>
-      {[1,2,3,4,5].map(i => (
-        <span key={i} style={{ color: i <= score ? '#b8860b' : '#d1d5db' }}>★</span>
+    <div style={{ color: 'var(--gold)', fontSize: 14, letterSpacing: 3 }}>
+      {[1, 2, 3, 4, 5].map((i) => (
+        <span key={i} style={{ color: i <= score ? 'var(--gold)' : 'var(--star-empty)' }}>
+          ★
+        </span>
       ))}
     </div>
   );
@@ -58,7 +60,7 @@ function getGameTimeDisplay(gameDate: string): string {
 async function getTopPicks(): Promise<GamePick[]> {
   const res = await client.getEntries({
     content_type: 'gamePick',
-    'fields.status': 'published',
+    'fields.status': 'live',
     order: ['-fields.confidenceScore'],
     limit: 5,
   });
@@ -71,96 +73,70 @@ export default async function Home() {
   return (
     <>
       <style>{`
-        .hero { padding: 64px 48px 56px; border-bottom: 1px solid #e5e0d5; text-align: center; background: #f9f6f0; }
-        .hero h1 { font-size: 36px; font-weight: 500; line-height: 1.35; margin-bottom: 14px; color: #111; }
-        .hero h1 em { font-style: normal; color: #2d8c3e; }
-        .hero p { font-size: 16px; color: #6b7280; line-height: 1.6; }
+        .hero { padding: 80px 48px 64px; border-bottom: 1px solid var(--border-subtle); text-align: center; }
+        .hero h1 { font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 44px; line-height: 1.18; margin-bottom: 18px; color: var(--fg); }
+        .hero h1 em { font-style: italic; color: var(--jade); }
+        .hero p { font-family: var(--font-ui); font-size: 14px; color: var(--gray-muted); line-height: 1.65; letter-spacing: 0.02em; max-width: 540px; margin: 0 auto; }
 
-        .section-header { display: flex; flex-direction: column; align-items: center; padding: 28px 48px 16px; gap: 16px; }
-        .section-label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: #9ca3af; text-transform: uppercase; }
-        .parlay-btn { font-size: 16px; font-weight: 700; color: #b8860b; background: #fdf8ee; border: 1.5px solid #d4aa50; border-radius: 30px; padding: 12px 32px; cursor: pointer; text-decoration: none; white-space: nowrap; }
+        .section-header { display: flex; flex-direction: column; align-items: center; padding: 40px 48px 24px; gap: 18px; }
+        .section-label { font-family: var(--font-ui); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; color: var(--gray-muted); text-transform: uppercase; }
+        .parlay-btn { font-family: var(--font-ui); font-size: 11px; font-weight: 600; color: var(--gold); background: transparent; border: 1px dashed var(--gold); border-radius: 0; padding: 12px 28px; cursor: pointer; text-decoration: none; white-space: nowrap; letter-spacing: 0.12em; text-transform: uppercase; transition: background 0.15s; }
+        .parlay-btn:hover { background: rgba(212, 175, 55, 0.08); }
 
-        .card { padding: 20px 48px 20px 44px; border-bottom: 0.5px solid #e5e7eb; border-left: 4px solid #2d8c3e; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; cursor: pointer; transition: background 0.15s; text-decoration: none; color: inherit; }
-        .card:hover { background: #f9fafb; }
+        .card-list { padding: 0 48px; }
+
+        .card { padding: 28px 0; border-bottom: 1px solid var(--border-subtle); border-left: 1px solid var(--jade); padding-left: 28px; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; cursor: pointer; transition: background 0.2s; text-decoration: none; color: inherit; margin-bottom: 0; }
+        .card:hover { background: rgba(74, 222, 128, 0.04); }
         .card-left { flex: 1; min-width: 0; }
-        .card-league { font-size: 11px; font-weight: 700; color: #2d8c3e; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
-        .card-title { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
-        .card-teaser { font-size: 13px; color: #6b7280; line-height: 1.5; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .card-play { display: inline-block; font-size: 11px; font-weight: 700; color: #1a6b2a; background: #f0faf2; border: 0.5px solid #a8d8b0; border-radius: 20px; padding: 2px 10px; }
-        .card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
-        .ev-badge { background: #f0faf2; color: #1a6b2a; font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 20px; border: 0.5px solid #a8d8b0; white-space: nowrap; }
-        .view-link { font-size: 13px; color: #b8860b; }
+        .edge-no { font-family: var(--font-ui); font-size: 10px; font-weight: 600; color: var(--jade); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 10px; }
+        .card-league { font-family: var(--font-ui); font-size: 10px; font-weight: 600; color: var(--gray-muted); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 4px; }
+        .card-title { font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 22px; line-height: 1.22; margin-bottom: 12px; color: var(--fg); }
+        .card-teaser { font-family: var(--font-prose); font-size: 13px; color: var(--gray-muted); line-height: 1.6; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .play-stripe { display: inline-block; font-family: var(--font-ui); font-size: 10px; font-weight: 600; color: var(--jade); border-top: 2px solid var(--jade); border-bottom: 2px solid var(--jade); padding: 6px 14px; letter-spacing: 0.1em; text-transform: uppercase; }
+        .card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; flex-shrink: 0; }
+        .ev-badge { background: transparent; color: var(--jade); font-family: var(--font-ui); font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 0; border: 1px solid var(--jade); white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
+        .view-link { font-family: var(--font-ui); font-size: 11px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
 
-        .hiw { padding: 48px; background: #f9f6f0; border-top: 1px solid #e5e0d5; }
-        .hiw-title { font-size: 20px; font-weight: 600; margin-bottom: 28px; color: #111; }
-        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-        .step { background: #fff; border: 0.5px solid #e5e0d5; border-radius: 10px; padding: 24px; border-top: 3px solid #2d8c3e; }
-        .step-num { font-size: 13px; font-weight: 700; color: #2d8c3e; margin-bottom: 8px; }
-        .step-text { font-size: 15px; color: #374151; line-height: 1.6; }
+        .empty { padding: 48px; font-family: var(--font-prose); font-style: italic; color: var(--gray-muted); font-size: 15px; text-align: center; }
+
+        .hiw { padding: 80px 48px; background: var(--bg-2); border-top: 1px solid var(--border-subtle); margin-top: 60px; }
+        .hiw-title { font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 28px; margin-bottom: 36px; color: var(--fg); text-align: center; }
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1100px; margin: 0 auto; }
+        .step { background: var(--bg); border: 1px solid var(--border-subtle); border-top: 2px solid var(--jade); padding: 32px 28px; }
+        .step-num { font-family: var(--font-brand); font-size: 22px; color: var(--jade); margin-bottom: 14px; letter-spacing: 0.12em; }
+        .step-text { font-family: var(--font-prose); font-size: 14px; color: var(--fg); line-height: 1.65; }
 
         @media (max-width: 768px) {
-          .hero { padding: 40px 20px; }
-          .hero h1 { font-size: 26px; }
-          .hero p { font-size: 15px; }
-          .section-header { padding: 20px 20px 12px; }
-          .card { padding: 16px 20px 16px 16px; flex-direction: column; gap: 12px; }
+          .hero { padding: 52px 20px 40px; }
+          .hero h1 { font-size: 30px; }
+          .hero p { font-size: 13px; }
+          .section-header { padding: 28px 20px 16px; }
+          .card-list { padding: 0 20px; }
+          .card { padding: 22px 0 22px 18px; flex-direction: column; gap: 14px; }
+          .card-title { font-size: 19px; }
+          .card-teaser { display: none; }
           .card-right { align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 10px; }
-          .hiw { padding: 32px 20px; }
-          .steps { grid-template-columns: 1fr; }
+          .hiw { padding: 56px 20px; }
+          .hiw-title { font-size: 22px; }
+          .steps { grid-template-columns: 1fr; gap: 18px; }
         }
       `}</style>
 
       <div className="hero">
-        <h1>Smarter bets, backed by <em>real math</em>.<br />Updated every morning.</h1>
-        <p>Algorithmic edge detection across 7 major leagues, explained simply.</p>
+        <h1>
+          Smarter bets, backed by <em>real math.</em>
+          <br />
+          Updated every morning.
+        </h1>
+        <p>Algorithmic edge detection across the major leagues — three independent pillars, fully explained, transparent track record.</p>
       </div>
 
       <div className="section-header">
         <div className="section-label">Today's Top Picks</div>
-        <Link className="parlay-btn" href="/parlay">🎯 Parlay of the Day</Link>
-      </div>
-
-      {picks.length === 0 && (
-        <div style={{ padding: '24px 48px', color: '#6b7280', fontSize: 14 }}>
-          No picks available today. Check back tomorrow morning.
-        </div>
-      )}
-
-      {picks.map((pick) => (
-        <Link key={pick.sys.id} href={buildGameUrl(pick)} className="card">
-          <div className="card-left">
-            <div className="card-league">{pick.fields.league} · {getGameTimeDisplay(pick.fields.gameDate)}</div>
-            <div className="card-title">{pick.fields.title}</div>
-            {pick.fields.analysisParagraph1 && (
-              <div className="card-teaser">{getTeaserFromRichText(pick.fields.analysisParagraph1)}</div>
-            )}
-            <span className="card-play">{pick.fields.playToLine}</span>
-          </div>
-          <div className="card-right">
-            <span className="ev-badge">{pick.fields.evPercentage} EV</span>
-            <StarRating score={pick.fields.confidenceScore} />
-            <span className="view-link">View Analysis →</span>
-          </div>
+        <Link className="parlay-btn" href="/parlay">
+          ◇ Parlay of the Day
         </Link>
-      ))}
-
-      <div className="hiw">
-        <div className="hiw-title">How SharpSpots works</div>
-        <div className="steps">
-          <div className="step">
-            <div className="step-num">01</div>
-            <div className="step-text">We scan every game across all major leagues daily</div>
-          </div>
-          <div className="step">
-            <div className="step-num">02</div>
-            <div className="step-text">Our model combines AI-driven quantitative and qualitative analysis to calculate where the sportsbook is mispriced</div>
-          </div>
-          <div className="step">
-            <div className="step-num">03</div>
-            <div className="step-text">You get the edge, explained in plain language</div>
-          </div>
-        </div>
       </div>
-    </>
-  );
-}
+
+      <div className="card-list">
+        

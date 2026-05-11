@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import SportsDropdown from './SportsDropdown';
+import './globals.css';
 
 export const metadata = {
   title: 'SharpSpots - +EV Sports Betting Analysis',
@@ -11,33 +12,32 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&display=swap');
-          *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-          body { font-family: system-ui, -apple-system, sans-serif; background: #fff; color: #111; }
+          .topbar { height: 3px; background: linear-gradient(to right, var(--jade) 50%, var(--gold) 50%); }
 
-          .topbar { height: 5px; background: linear-gradient(to right, #2d8c3e 50%, #b8860b 50%); }
+          .nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; background: var(--bg-2); border-bottom: 1px solid var(--border-subtle); position: relative; }
+          .logo { display: flex; gap: 0; line-height: 1; font-family: var(--font-brand); font-weight: 400; font-size: 32px; text-transform: uppercase; letter-spacing: 0.14em; text-decoration: none; }
+          .logo .sharp { color: var(--jade); }
+          .logo .spots { color: var(--gold); }
+          .nav-links { display: flex; gap: 32px; align-items: center; }
+          .nav-links a { font-family: var(--font-ui); font-size: 13px; color: var(--fg); text-decoration: none; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.15s; }
+          .nav-links a:hover { color: var(--jade); }
+          .sports-btn { font-family: var(--font-ui); font-size: 13px; color: var(--fg); background: none; border: none; cursor: pointer; font-weight: 500; padding: 0; letter-spacing: 0.05em; text-transform: uppercase; }
+          .sports-btn:after { content: ' ▾'; font-size: 10px; color: var(--jade); }
+          .sports-btn:hover { color: var(--jade); }
 
-          .nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; border-bottom: 1px solid #e5e7eb; position: relative; }
-          .logo { display: flex; flex-direction: column; line-height: 0.88; font-family: 'Barlow Condensed', Arial Black, sans-serif; font-weight: 800; font-size: 72px; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; }
-          .logo .sharp { color: #2d8c3e; }
-          .logo .spots { color: #b8860b; }
-          .nav-links { display: flex; gap: 36px; align-items: center; }
-          .nav-links a { font-size: 16px; color: #111; text-decoration: none; font-weight: 700; }
-          .sports-btn { font-size: 16px; color: #111; background: none; border: none; cursor: pointer; font-family: system-ui; font-weight: 700; padding: 0; }
-          .sports-btn:after { content: ' ▾'; font-size: 12px; }
-
-          .footer { padding: 20px 48px; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 60px; }
+          .footer { padding: 24px 48px; background: var(--bg-2); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 80px; }
           .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
-          .footer-links a { font-size: 12px; color: #9ca3af; text-decoration: none; }
-          .footer-disc { font-size: 11px; color: #9ca3af; }
+          .footer-links a { font-family: var(--font-ui); font-size: 11px; color: var(--gray-muted); text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase; }
+          .footer-links a:hover { color: var(--jade); }
+          .footer-disc { font-family: var(--font-ui); font-size: 10px; color: var(--gray-muted); letter-spacing: 0.04em; }
 
           @media (max-width: 768px) {
-            .nav { padding: 16px 20px; }
-            .logo { font-size: 48px; }
-            .nav-links { gap: 20px; }
-            .nav-links a { font-size: 14px; }
-            .sports-btn { font-size: 14px; }
-            .footer { padding: 16px 20px; }
+            .nav { padding: 14px 20px; }
+            .logo { font-size: 24px; letter-spacing: 0.12em; }
+            .nav-links { gap: 18px; }
+            .nav-links a { font-size: 11px; }
+            .sports-btn { font-size: 11px; }
+            .footer { padding: 18px 20px; }
             .footer-links { gap: 16px; }
           }
         `}</style>
@@ -61,13 +61,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="footer">
           <div className="footer-links">
             <Link href="/sports">Sports</Link>
-            <Link href="/how-it-works">How It Works</Link>
-            <Link href="/blog">Blog</Link>
-            <Link href="/responsible-gambling">Responsible Gambling</Link>
-          </div>
-          <div className="footer-disc">21+ only. Bet responsibly.</div>
-        </footer>
-      </body>
-    </html>
-  );
-}
+     
