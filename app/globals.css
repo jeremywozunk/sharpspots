@@ -2,7 +2,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  /* SharpSpots I-D Green Room palette — locked May 8, 2026 */
   --bg: #0e1612;
   --bg-2: #0a110d;
   --jade: #4ade80;
@@ -11,5 +10,26 @@
   --gray-muted: #8a9a8e;
   --fg: #e8f5ed;
   --fg-muted: #5a8a6e;
-  --fg-gold-muted: #8a7a4a;
-  --star-empt
+  --star-empty: #3d3018;
+  --border-subtle: #2a3f30;
+  --font-brand: 'Bebas Neue', 'Oswald', Arial Black, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-prose: Georgia, 'Times New Roman', serif;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }

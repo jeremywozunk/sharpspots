@@ -40,7 +40,6 @@ export default function SportsDropdown() {
       >
         Sports
       </button>
-
       {isOpen && (
         <div className="sports-dropdown-menu">
           {LEAGUES.map((league) => (
@@ -55,16 +54,11 @@ export default function SportsDropdown() {
           ))}
         </div>
       )}
-
       <style>{`
         .sports-dropdown-wrapper { position: relative; display: inline-block; }
-        .sports-dropdown-menu { position: absolute; top: calc(100% + 12px); right: 0; background: var(--bg-2); border: 1px solid var(--border-subtle); border-radius: 4px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); min-width: 220px; padding: 8px; z-index: 100; }
-        .sports-dropdown-item { display: block; padding: 10px 14px; font-family: var(--font-ui); font-size: 12px; font-weight: 500; color: var(--fg); text-decoration: none; border-radius: 2px; letter-spacing: 0.05em; text-transform: uppercase; transition: background 0.1s, color 0.1s; }
+        .sports-dropdown-menu { position: absolute; top: calc(100% + 12px); right: 0; background: var(--bg-2); border: 1px solid var(--border-subtle); min-width: 220px; padding: 8px; z-index: 100; }
+        .sports-dropdown-item { display: block; padding: 10px 14px; font-family: var(--font-ui); font-size: 12px; font-weight: 500; color: var(--fg); letter-spacing: 0.05em; text-transform: uppercase; }
         .sports-dropdown-item:hover { background: var(--border-subtle); color: var(--jade); }
-        @media (max-width: 768px) {
-          .sports-dropdown-menu { right: 0; min-width: 200px; }
-          .sports-dropdown-item { padding: 12px 14px; font-size: 14px; }
-        }
       `}</style>
     </div>
   );
