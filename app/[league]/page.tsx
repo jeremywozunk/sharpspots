@@ -85,10 +85,37 @@ export default async function LeaguePage({ params }: PageProps) {
   const leagueDisplay = ALLOWED_LEAGUES[leagueSlug];
   if (!leagueDisplay) notFound();
 
+  // Compute today's ET calendar day, then derive the UTC start/end of that
+  // 24-hour ET window. Handles DST automatically by probing the current
+  // ET-vs-UTC offset at runtime (4h for EDT, 5h for EST).
+  //
+  // Previous version used `new Date(year, month, day)` which the server
+  // interprets in its LOCAL timezone (UTC on Vercel). That filtered out
+  // games tipping after 7:59 PM ET, since their gameDate values fall on
+  // the next UTC day.
   const now = new Date();
-  const etDate = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
-  const startOfDay = new Date(etDate.getFullYear(), etDate.getMonth(), etDate.getDate(), 0, 0, 0);
-  const endOfDay = new Date(etDate.getFullYear(), etDate.getMonth(), etDate.getDate(), 23, 59, 59);
+  const etParts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/New_York',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(now);
+  const etYear = etParts.find(p => p.type === 'year')!.value;
+  const etMonth = etParts.find(p => p.type === 'month')!.value;
+  const etDay = etParts.find(p => p.type === 'day')!.value;
+
+  // Probe the current ET offset by formatting a known UTC instant in ET.
+  // 12:00 UTC formatted in ET is 07 (EDT) or 08 (EST). 12 - that = offset hours.
+  const probe = new Date(`${etYear}-${etMonth}-${etDay}T12:00:00Z`);
+  const probeHourET = parseInt(new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York', hour: '2-digit', hour12: false,
+  }).format(probe), 10);
+  const etOffsetHours = 12 - probeHourET;
+
+  const etDayStartUTC = new Date(`${etYear}-${etMonth}-${etDay}T00:00:00Z`).getTime()
+                       + etOffsetHours * 60 * 60 * 1000;
+  const startOfDay = new Date(etDayStartUTC);
+  const endOfDay = new Date(etDayStartUTC + 24 * 60 * 60 * 1000 - 1);
+
+  const todayEtCalendar = `${etYear}-${etMonth}-${etDay}`;
 
   const entries = await client.getEntries({
     content_type: 'gamePick',
@@ -100,8 +127,9 @@ export default async function LeaguePage({ params }: PageProps) {
   });
 
   const picks = entries.items;
-  const todayDisplay = etDate.toLocaleDateString('en-US', {
-    weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
+  // Format today's ET calendar date for the page header.
+  const todayDisplay = new Date(`${todayEtCalendar}T12:00:00Z`).toLocaleDateString('en-US', {
+    weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York',
   });
 
   return (
