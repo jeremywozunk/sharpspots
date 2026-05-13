@@ -99,13 +99,13 @@ const SPORTSBOOK_TOOLS = [
 
 export default function ResponsibleGamblingPage() {
   return (
-    <main style={{ background: '#fff', color: '#1a1a1a' }}>
+    <main style={{ background: 'var(--bg)', color: 'var(--fg)' }}>
       {/* HERO */}
       <section
         style={{
-          background: '#f9f6f0',
+          background: 'var(--bg-2)',
           padding: '64px 24px',
-          borderBottom: '1px solid #e8e0d0',
+          borderBottom: '1px solid var(--border-subtle)',
         }}
       >
         <div style={{ maxWidth: 880, margin: '0 auto' }}>
@@ -115,7 +115,7 @@ export default function ResponsibleGamblingPage() {
               fontWeight: 800,
               fontSize: 14,
               letterSpacing: 2,
-              color: '#2d8c3e',
+              color: 'var(--jade)',
               textTransform: 'uppercase',
               margin: 0,
               marginBottom: 12,
@@ -140,7 +140,7 @@ export default function ResponsibleGamblingPage() {
             style={{
               fontSize: 18,
               lineHeight: 1.6,
-              color: '#3d3d3d',
+              color: 'var(--fg)',
               margin: 0,
               maxWidth: 720,
             }}
@@ -154,12 +154,12 @@ export default function ResponsibleGamblingPage() {
       </section>
 
       {/* NATIONAL HELPLINE BLOCK */}
-      <section style={{ padding: '56px 24px', background: '#fff' }}>
+      <section style={{ padding: '56px 24px', background: 'var(--bg)' }}>
         <div style={{ maxWidth: 880, margin: '0 auto' }}>
           <div
             style={{
-              background: '#fff',
-              border: '4px solid #2d8c3e',
+              background: 'var(--bg)',
+              border: '4px solid var(--jade)',
               borderRadius: 12,
               padding: '32px 28px',
               boxShadow: '0 4px 20px rgba(45, 140, 62, 0.08)',
@@ -171,7 +171,7 @@ export default function ResponsibleGamblingPage() {
                 fontWeight: 800,
                 fontSize: 14,
                 letterSpacing: 2,
-                color: '#b8860b',
+                color: 'var(--gold)',
                 textTransform: 'uppercase',
                 margin: 0,
                 marginBottom: 8,
@@ -198,7 +198,7 @@ export default function ResponsibleGamblingPage() {
                 fontFamily: 'Barlow Condensed, sans-serif',
                 fontWeight: 800,
                 fontSize: 'clamp(36px, 7vw, 52px)',
-                color: '#2d8c3e',
+                color: 'var(--jade)',
                 textDecoration: 'none',
                 margin: 0,
                 marginBottom: 12,
@@ -207,14 +207,14 @@ export default function ResponsibleGamblingPage() {
             >
               1-800-GAMBLER
             </a>
-            <p style={{ fontSize: 16, lineHeight: 1.6, color: '#3d3d3d', margin: 0 }}>
+            <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--fg)', margin: 0 }}>
               Call, text, or chat with the National Council on Problem Gambling.
               Available in every U.S. state.{' '}
               <a
                 href="https://www.ncpgambling.org"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: '#b8860b', fontWeight: 600 }}
+                style={{ color: 'var(--gold)', fontWeight: 600 }}
               >
                 ncpgambling.org →
               </a>
@@ -227,9 +227,9 @@ export default function ResponsibleGamblingPage() {
       <section
         style={{
           padding: '56px 24px',
-          background: '#f9f6f0',
-          borderTop: '1px solid #e8e0d0',
-          borderBottom: '1px solid #e8e0d0',
+          background: 'var(--bg-2)',
+          borderTop: '1px solid var(--border-subtle)',
+          borderBottom: '1px solid var(--border-subtle)',
         }}
       >
         <div style={{ maxWidth: 1080, margin: '0 auto' }}>
@@ -249,7 +249,7 @@ export default function ResponsibleGamblingPage() {
             style={{
               fontSize: 16,
               lineHeight: 1.6,
-              color: '#3d3d3d',
+              color: 'var(--fg)',
               margin: 0,
               marginBottom: 32,
               maxWidth: 720,
@@ -271,8 +271,8 @@ export default function ResponsibleGamblingPage() {
               <div
                 key={s.abbr}
                 style={{
-                  background: '#fff',
-                  borderLeft: '4px solid #2d8c3e',
+                  background: 'var(--bg)',
+                  borderLeft: '4px solid var(--jade)',
                   borderRadius: 8,
                   padding: '20px 22px',
                 }}
@@ -283,7 +283,7 @@ export default function ResponsibleGamblingPage() {
                     fontWeight: 800,
                     fontSize: 13,
                     letterSpacing: 2,
-                    color: '#b8860b',
+                    color: 'var(--gold)',
                     textTransform: 'uppercase',
                     margin: 0,
                     marginBottom: 4,
@@ -309,7 +309,7 @@ export default function ResponsibleGamblingPage() {
                     display: 'block',
                     fontSize: 20,
                     fontWeight: 700,
-                    color: '#2d8c3e',
+                    color: 'var(--jade)',
                     textDecoration: 'none',
                     marginBottom: 8,
                   }}
@@ -322,9 +322,9 @@ export default function ResponsibleGamblingPage() {
                   rel="noopener noreferrer"
                   style={{
                     fontSize: 14,
-                    color: '#666',
+                    color: 'var(--gray-muted)',
                     textDecoration: 'none',
-                    borderBottom: '1px solid #ddd',
+                    borderBottom: '1px solid var(--border-subtle)',
                   }}
                 >
                   {s.org} →
@@ -336,7 +336,7 @@ export default function ResponsibleGamblingPage() {
           <p
             style={{
               fontSize: 13,
-              color: '#888',
+              color: 'var(--gray-muted)',
               marginTop: 24,
               fontStyle: 'italic',
             }}
@@ -348,7 +348,7 @@ export default function ResponsibleGamblingPage() {
       </section>
 
       {/* WARNING SIGNS */}
-      <section style={{ padding: '56px 24px', background: '#fff' }}>
+      <section style={{ padding: '56px 24px', background: 'var(--bg)' }}>
         <div style={{ maxWidth: 880, margin: '0 auto' }}>
           <h2
             style={{
@@ -366,7 +366,7 @@ export default function ResponsibleGamblingPage() {
             style={{
               fontSize: 16,
               lineHeight: 1.6,
-              color: '#3d3d3d',
+              color: 'var(--fg)',
               margin: 0,
               marginBottom: 28,
             }}
@@ -389,13 +389,13 @@ export default function ResponsibleGamblingPage() {
               <li
                 key={i}
                 style={{
-                  background: '#f9f6f0',
-                  borderLeft: '4px solid #b8860b',
+                  background: 'var(--bg-2)',
+                  borderLeft: '4px solid var(--gold)',
                   borderRadius: 6,
                   padding: '14px 18px',
                   fontSize: 16,
                   lineHeight: 1.5,
-                  color: '#1a1a1a',
+                  color: 'var(--fg)',
                 }}
               >
                 {sign}
@@ -409,9 +409,9 @@ export default function ResponsibleGamblingPage() {
       <section
         style={{
           padding: '56px 24px',
-          background: '#f9f6f0',
-          borderTop: '1px solid #e8e0d0',
-          borderBottom: '1px solid #e8e0d0',
+          background: 'var(--bg-2)',
+          borderTop: '1px solid var(--border-subtle)',
+          borderBottom: '1px solid var(--border-subtle)',
         }}
       >
         <div style={{ maxWidth: 880, margin: '0 auto' }}>
@@ -431,7 +431,7 @@ export default function ResponsibleGamblingPage() {
             style={{
               fontSize: 16,
               lineHeight: 1.7,
-              color: '#3d3d3d',
+              color: 'var(--fg)',
               margin: 0,
               marginBottom: 16,
             }}
@@ -446,7 +446,7 @@ export default function ResponsibleGamblingPage() {
             style={{
               fontSize: 16,
               lineHeight: 1.7,
-              color: '#3d3d3d',
+              color: 'var(--fg)',
               margin: 0,
               marginBottom: 24,
             }}
@@ -461,8 +461,8 @@ export default function ResponsibleGamblingPage() {
             rel="noopener noreferrer"
             style={{
               display: 'inline-block',
-              background: '#2d8c3e',
-              color: '#fff',
+              background: 'var(--jade)',
+              color: 'var(--fg)',
               padding: '14px 28px',
               borderRadius: 6,
               fontWeight: 700,
@@ -479,7 +479,7 @@ export default function ResponsibleGamblingPage() {
       </section>
 
       {/* SPORTSBOOK TOOLS */}
-      <section style={{ padding: '56px 24px', background: '#fff' }}>
+      <section style={{ padding: '56px 24px', background: 'var(--bg)' }}>
         <div style={{ maxWidth: 880, margin: '0 auto' }}>
           <h2
             style={{
@@ -497,7 +497,7 @@ export default function ResponsibleGamblingPage() {
             style={{
               fontSize: 16,
               lineHeight: 1.6,
-              color: '#3d3d3d',
+              color: 'var(--fg)',
               margin: 0,
               marginBottom: 28,
             }}
@@ -518,9 +518,9 @@ export default function ResponsibleGamblingPage() {
               <div
                 key={t.title}
                 style={{
-                  background: '#fff',
-                  border: '1px solid #e8e0d0',
-                  borderTop: '4px solid #b8860b',
+                  background: 'var(--bg)',
+                  border: '1px solid var(--border-subtle)',
+                  borderTop: '4px solid var(--gold)',
                   borderRadius: 8,
                   padding: '22px 20px',
                 }}
@@ -541,7 +541,7 @@ export default function ResponsibleGamblingPage() {
                   style={{
                     fontSize: 15,
                     lineHeight: 1.6,
-                    color: '#3d3d3d',
+                    color: 'var(--fg)',
                     margin: 0,
                   }}
                 >
@@ -557,8 +557,8 @@ export default function ResponsibleGamblingPage() {
       <section
         style={{
           padding: '56px 24px',
-          background: '#f9f6f0',
-          borderTop: '1px solid #e8e0d0',
+          background: 'var(--bg-2)',
+          borderTop: '1px solid var(--border-subtle)',
         }}
       >
         <div style={{ maxWidth: 880, margin: '0 auto' }}>
@@ -586,13 +586,13 @@ export default function ResponsibleGamblingPage() {
               <div
                 key={i}
                 style={{
-                  background: '#fff',
-                  borderLeft: '4px solid #2d8c3e',
+                  background: 'var(--bg)',
+                  borderLeft: '4px solid var(--jade)',
                   borderRadius: 6,
                   padding: '16px 20px',
                   fontSize: 15,
                   lineHeight: 1.6,
-                  color: '#1a1a1a',
+                  color: 'var(--fg)',
                 }}
               >
                 {line}
@@ -606,8 +606,8 @@ export default function ResponsibleGamblingPage() {
       <section
         style={{
           padding: '40px 24px 64px',
-          background: '#1a1a1a',
-          color: '#ccc',
+          background: 'var(--bg-2)',
+          color: 'var(--gray-muted)',
         }}
       >
         <div style={{ maxWidth: 880, margin: '0 auto' }}>
@@ -617,7 +617,7 @@ export default function ResponsibleGamblingPage() {
               fontWeight: 800,
               fontSize: 14,
               letterSpacing: 2,
-              color: '#b8860b',
+              color: 'var(--gold)',
               textTransform: 'uppercase',
               margin: 0,
               marginBottom: 12,
@@ -656,13 +656,13 @@ export default function ResponsibleGamblingPage() {
               fontSize: 14,
               lineHeight: 1.7,
               margin: 0,
-              color: '#999',
+              color: 'var(--gray-muted)',
             }}
           >
             If you or someone you know has a gambling problem, call{' '}
             <a
               href="tel:18004262537"
-              style={{ color: '#b8860b', fontWeight: 600 }}
+              style={{ color: 'var(--gold)', fontWeight: 600 }}
             >
               1-800-GAMBLER
             </a>

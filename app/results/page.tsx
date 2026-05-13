@@ -170,13 +170,13 @@ export default function ResultsPage() {
   const hasData = quarterStats.total > 0;
 
   return (
-    <main style={{ background: '#fff', color: '#1a1a1a' }}>
+    <main style={{ background: 'var(--bg)', color: 'var(--fg)' }}>
       {/* HERO */}
       <section
         style={{
-          background: '#f9f6f0',
+          background: 'var(--bg-2)',
           padding: '64px 24px 48px',
-          borderBottom: '1px solid #e8e0d0',
+          borderBottom: '1px solid var(--border-subtle)',
         }}
       >
         <div style={{ maxWidth: 1080, margin: '0 auto' }}>
@@ -186,7 +186,7 @@ export default function ResultsPage() {
               fontWeight: 800,
               fontSize: 14,
               letterSpacing: 2,
-              color: '#2d8c3e',
+              color: 'var(--jade)',
               textTransform: 'uppercase',
               margin: 0,
               marginBottom: 12,
@@ -211,7 +211,7 @@ export default function ResultsPage() {
             style={{
               fontSize: 18,
               lineHeight: 1.6,
-              color: '#3d3d3d',
+              color: 'var(--fg)',
               margin: 0,
               maxWidth: 720,
             }}
@@ -225,10 +225,10 @@ export default function ResultsPage() {
       </section>
 
       {/* QUARTER HERO STATS + CHART */}
-      <section style={{ padding: '48px 24px', background: '#fff' }}>
+      <section style={{ padding: '48px 24px', background: 'var(--bg)' }}>
         <div style={{ maxWidth: 1080, margin: '0 auto' }}>
           {loading ? (
-            <p style={{ textAlign: 'center', color: '#888', padding: '60px 0' }}>
+            <p style={{ textAlign: 'center', color: 'var(--gray-muted)', padding: '60px 0' }}>
               Loading results...
             </p>
           ) : !hasData ? (
@@ -240,8 +240,8 @@ export default function ResultsPage() {
                 <ChartTitle>Cumulative Units &middot; {quarter.label}</ChartTitle>
                 <div
                   style={{
-                    background: '#fff',
-                    border: '1px solid #e8e0d0',
+                    background: 'var(--bg)',
+                    border: '1px solid var(--border-subtle)',
                     borderRadius: 8,
                     padding: 20,
                     height: 360,
@@ -249,29 +249,29 @@ export default function ResultsPage() {
                 >
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={curve}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#2a3f30" />
                       <XAxis
                         dataKey="date"
-                        tick={{ fontSize: 12, fill: '#666' }}
+                        tick={{ fontSize: 12, fill: '#8a9a8e' }}
                       />
-                      <YAxis tick={{ fontSize: 12, fill: '#666' }} />
+                      <YAxis tick={{ fontSize: 12, fill: '#8a9a8e' }} />
                       <Tooltip
                         contentStyle={{
-                          background: '#1a1a1a',
+                          background: 'var(--bg-2)',
                           border: 'none',
                           borderRadius: 6,
-                          color: '#fff',
+                          color: 'var(--fg)',
                         }}
-                        labelStyle={{ color: '#b8860b' }}
+                        labelStyle={{ color: 'var(--gold)' }}
                       />
-                      <ReferenceLine y={0} stroke="#999" strokeDasharray="3 3" />
+                      <ReferenceLine y={0} stroke="#5a8a6e" strokeDasharray="3 3" />
                       <Line
                         type="monotone"
                         dataKey="units"
-                        stroke="#2d8c3e"
+                        stroke="var(--jade)"
                         strokeWidth={3}
-                        dot={{ fill: '#2d8c3e', r: 3 }}
-                        activeDot={{ r: 6, fill: '#b8860b' }}
+                        dot={{ fill: 'var(--jade)', r: 3 }}
+                        activeDot={{ r: 6, fill: 'var(--gold)' }}
                       />
                     </LineChart>
                   </ResponsiveContainer>
@@ -287,9 +287,9 @@ export default function ResultsPage() {
         <section
           style={{
             padding: '48px 24px',
-            background: '#f9f6f0',
-            borderTop: '1px solid #e8e0d0',
-            borderBottom: '1px solid #e8e0d0',
+            background: 'var(--bg-2)',
+            borderTop: '1px solid var(--border-subtle)',
+            borderBottom: '1px solid var(--border-subtle)',
           }}
         >
           <div style={{ maxWidth: 1080, margin: '0 auto' }}>
@@ -315,15 +315,15 @@ export default function ResultsPage() {
               <ChartCard title="ROI by Confidence Tier">
                 <ResponsiveContainer width="100%" height={260}>
                   <BarChart data={confData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#ddd" />
-                    <XAxis dataKey="tier" tick={{ fontSize: 13, fill: '#666' }} />
-                    <YAxis tick={{ fontSize: 12, fill: '#666' }} unit="%" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#2a3f30" />
+                    <XAxis dataKey="tier" tick={{ fontSize: 13, fill: '#8a9a8e' }} />
+                    <YAxis tick={{ fontSize: 12, fill: '#8a9a8e' }} unit="%" />
                     <Tooltip
                       contentStyle={{
-                        background: '#1a1a1a',
+                        background: 'var(--bg-2)',
                         border: 'none',
                         borderRadius: 6,
-                        color: '#fff',
+                        color: 'var(--fg)',
                       }}
                       formatter={(value, _name, props) => {
                         const v = typeof value === 'number' ? value : 0;
@@ -336,7 +336,7 @@ export default function ResultsPage() {
                       {confData.map((entry, idx) => (
                         <Cell
                           key={idx}
-                          fill={entry.roi >= 0 ? '#2d8c3e' : '#c44545'}
+                          fill={entry.roi >= 0 ? 'var(--jade)' : '#c44545'}
                         />
                       ))}
                     </Bar>
@@ -351,25 +351,25 @@ export default function ResultsPage() {
                     layout="vertical"
                     margin={{ left: 20 }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#ddd" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#2a3f30" />
                     <XAxis
                       type="number"
-                      tick={{ fontSize: 12, fill: '#666' }}
+                      tick={{ fontSize: 12, fill: '#8a9a8e' }}
                       unit="%"
                       domain={[0, 100]}
                     />
                     <YAxis
                       type="category"
                       dataKey="league"
-                      tick={{ fontSize: 12, fill: '#666' }}
+                      tick={{ fontSize: 12, fill: '#8a9a8e' }}
                       width={80}
                     />
                     <Tooltip
                       contentStyle={{
-                        background: '#1a1a1a',
+                        background: 'var(--bg-2)',
                         border: 'none',
                         borderRadius: 6,
-                        color: '#fff',
+                        color: 'var(--fg)',
                       }}
                       formatter={(value, _name, props) => {
                         const v = typeof value === 'number' ? value : 0;
@@ -378,7 +378,7 @@ export default function ResultsPage() {
                         return [`${v}% (n=${n})`, 'Win Rate'];
                       }}
                     />
-                    <Bar dataKey="winRate" radius={[0, 4, 4, 0]} fill="#b8860b" />
+                    <Bar dataKey="winRate" radius={[0, 4, 4, 0]} fill="var(--gold)" />
                   </BarChart>
                 </ResponsiveContainer>
               </ChartCard>
@@ -388,7 +388,7 @@ export default function ResultsPage() {
       )}
 
       {/* LIFETIME BLOCK */}
-      <section style={{ padding: '48px 24px', background: '#fff' }}>
+      <section style={{ padding: '48px 24px', background: 'var(--bg)' }}>
         <div style={{ maxWidth: 1080, margin: '0 auto' }}>
           <p
             style={{
@@ -396,7 +396,7 @@ export default function ResultsPage() {
               fontWeight: 800,
               fontSize: 14,
               letterSpacing: 2,
-              color: '#b8860b',
+              color: 'var(--gold)',
               textTransform: 'uppercase',
               margin: 0,
               marginBottom: 8,
@@ -417,7 +417,7 @@ export default function ResultsPage() {
             Lifetime Performance
           </h2>
           {lifetimeStats.total === 0 ? (
-            <p style={{ color: '#888', fontSize: 16 }}>
+            <p style={{ color: 'var(--gray-muted)', fontSize: 16 }}>
               Lifetime stats appear once results begin posting.
             </p>
           ) : (
@@ -430,8 +430,8 @@ export default function ResultsPage() {
       <section
         style={{
           padding: '48px 24px',
-          background: '#f9f6f0',
-          borderTop: '1px solid #e8e0d0',
+          background: 'var(--bg-2)',
+          borderTop: '1px solid var(--border-subtle)',
         }}
       >
         <div style={{ maxWidth: 1080, margin: '0 auto' }}>
@@ -450,7 +450,7 @@ export default function ResultsPage() {
           <p
             style={{
               fontSize: 15,
-              color: '#3d3d3d',
+              color: 'var(--fg)',
               marginBottom: 24,
               maxWidth: 720,
             }}
@@ -461,12 +461,12 @@ export default function ResultsPage() {
           </p>
           <div
             style={{
-              background: '#fff',
-              border: '1px solid #e8e0d0',
+              background: 'var(--bg)',
+              border: '1px solid var(--border-subtle)',
               borderRadius: 8,
               padding: '32px 24px',
               textAlign: 'center',
-              color: '#888',
+              color: 'var(--gray-muted)',
             }}
           >
             <p style={{ margin: 0, fontSize: 15 }}>
@@ -481,8 +481,8 @@ export default function ResultsPage() {
       <section
         style={{
           padding: '40px 24px 64px',
-          background: '#fff',
-          borderTop: '1px solid #e8e0d0',
+          background: 'var(--bg)',
+          borderTop: '1px solid var(--border-subtle)',
         }}
       >
         <div style={{ maxWidth: 880, margin: '0 auto' }}>
@@ -492,7 +492,7 @@ export default function ResultsPage() {
               fontWeight: 800,
               fontSize: 13,
               letterSpacing: 2,
-              color: '#888',
+              color: 'var(--gray-muted)',
               textTransform: 'uppercase',
               margin: 0,
               marginBottom: 12,
@@ -504,7 +504,7 @@ export default function ResultsPage() {
             style={{
               fontSize: 14,
               lineHeight: 1.7,
-              color: '#666',
+              color: 'var(--gray-muted)',
               margin: 0,
             }}
           >
@@ -532,7 +532,7 @@ function StatRow({
   label: string;
 }) {
   const unitsColor =
-    stats.units > 0 ? '#2d8c3e' : stats.units < 0 ? '#c44545' : '#666';
+    stats.units > 0 ? 'var(--jade)' : stats.units < 0 ? '#c44545' : '#666';
   return (
     <div>
       <p
@@ -541,7 +541,7 @@ function StatRow({
           fontWeight: 800,
           fontSize: 14,
           letterSpacing: 2,
-          color: '#b8860b',
+          color: 'var(--gold)',
           textTransform: 'uppercase',
           margin: 0,
           marginBottom: 8,
@@ -576,7 +576,7 @@ function StatRow({
 
 function CompactStatRow({ stats }: { stats: AggregateStats }) {
   const unitsColor =
-    stats.units > 0 ? '#2d8c3e' : stats.units < 0 ? '#c44545' : '#666';
+    stats.units > 0 ? 'var(--jade)' : stats.units < 0 ? '#c44545' : '#666';
   return (
     <div
       style={{
@@ -604,7 +604,7 @@ function CompactStatRow({ stats }: { stats: AggregateStats }) {
 function BigStat({
   label,
   value,
-  color = '#1a1a1a',
+  color = 'var(--fg)',
 }: {
   label: string;
   value: string;
@@ -613,8 +613,8 @@ function BigStat({
   return (
     <div
       style={{
-        background: '#fff',
-        borderLeft: '4px solid #2d8c3e',
+        background: 'var(--bg)',
+        borderLeft: '4px solid var(--jade)',
         borderRadius: 6,
         padding: '20px 22px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
@@ -626,7 +626,7 @@ function BigStat({
           fontWeight: 700,
           fontSize: 12,
           letterSpacing: 1.5,
-          color: '#888',
+          color: 'var(--gray-muted)',
           textTransform: 'uppercase',
           margin: 0,
           marginBottom: 6,
@@ -653,7 +653,7 @@ function BigStat({
 function SmallStat({
   label,
   value,
-  color = '#1a1a1a',
+  color = 'var(--fg)',
 }: {
   label: string;
   value: string;
@@ -662,8 +662,8 @@ function SmallStat({
   return (
     <div
       style={{
-        background: '#fff',
-        border: '1px solid #e8e0d0',
+        background: 'var(--bg)',
+        border: '1px solid var(--border-subtle)',
         borderRadius: 6,
         padding: '14px 18px',
       }}
@@ -674,7 +674,7 @@ function SmallStat({
           fontWeight: 700,
           fontSize: 11,
           letterSpacing: 1.5,
-          color: '#888',
+          color: 'var(--gray-muted)',
           textTransform: 'uppercase',
           margin: 0,
           marginBottom: 4,
@@ -725,8 +725,8 @@ function ChartCard({
   return (
     <div
       style={{
-        background: '#fff',
-        border: '1px solid #e8e0d0',
+        background: 'var(--bg)',
+        border: '1px solid var(--border-subtle)',
         borderRadius: 8,
         padding: 20,
       }}
@@ -752,8 +752,8 @@ function EmptyState() {
   return (
     <div
       style={{
-        background: '#f9f6f0',
-        border: '2px dashed #d4c5a0',
+        background: 'var(--bg-2)',
+        border: '2px dashed var(--gold)',
         borderRadius: 12,
         padding: '60px 32px',
         textAlign: 'center',
@@ -765,7 +765,7 @@ function EmptyState() {
           fontWeight: 800,
           fontSize: 14,
           letterSpacing: 2,
-          color: '#b8860b',
+          color: 'var(--gold)',
           textTransform: 'uppercase',
           margin: 0,
           marginBottom: 12,
@@ -781,7 +781,7 @@ function EmptyState() {
           margin: 0,
           marginBottom: 16,
           textTransform: 'uppercase',
-          color: '#1a1a1a',
+          color: 'var(--fg)',
         }}
       >
         First Results Posting Soon
@@ -790,7 +790,7 @@ function EmptyState() {
         style={{
           fontSize: 16,
           lineHeight: 1.6,
-          color: '#3d3d3d',
+          color: 'var(--fg)',
           margin: 0,
           maxWidth: 520,
           marginInline: 'auto',

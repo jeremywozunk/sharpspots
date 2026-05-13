@@ -44,6 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="nav-links">
             <SportsDropdown />
             <Link href="/how-it-works">How It Works</Link>
+            <Link href="/track-record">Track Record</Link>
             <Link href="/blog">Blog</Link>
           </div>
         </nav>
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="footer-links">
             <Link href="/sports">Sports</Link>
             <Link href="/how-it-works">How It Works</Link>
+            <Link href="/track-record">Track Record</Link>
             <Link href="/blog">Blog</Link>
             <Link href="/responsible-gambling">Responsible Gambling</Link>
           </div>
