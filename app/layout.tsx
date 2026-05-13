@@ -12,11 +12,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <style>{`
-          .topbar { height: 3px; background: linear-gradient(to right, var(--jade) 50%, var(--gold) 50%); }
+          .topbar { height: 3px; background: linear-gradient(to right, var(--jade) 50%, var(--cream) 50%); }
           .nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; background: var(--bg-2); border-bottom: 1px solid var(--border-subtle); }
           .logo { display: flex; gap: 0; line-height: 1; font-family: var(--font-brand); font-weight: 400; font-size: 32px; text-transform: uppercase; letter-spacing: 0.14em; }
           .logo .sharp { color: var(--jade); }
-          .logo .spots { color: var(--gold); }
+          .logo .spots { color: var(--cream); }
           .nav-links { display: flex; gap: 32px; align-items: center; }
           .nav-links a { font-family: var(--font-ui); font-size: 13px; color: var(--fg); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
           .nav-links a:hover { color: var(--jade); }

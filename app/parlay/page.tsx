@@ -140,7 +140,7 @@ export default async function ParlayPage() {
         .leg-meta { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
         .leg-play { display: inline-block; font-size: 10px; font-weight: 600; color: var(--jade); border-top: 2px solid var(--jade); border-bottom: 2px solid var(--jade); padding: 4px 10px; letter-spacing: 0.08em; text-transform: uppercase; }
         .leg-odds { font-size: 13px; font-weight: 600; color: var(--fg); font-family: 'Courier New', monospace; }
-        .leg-ev { color: var(--jade); font-size: 10px; font-weight: 600; padding: 4px 10px; border: 1px solid var(--jade); letter-spacing: 0.06em; text-transform: uppercase; }
+        .leg-ev { background: var(--jade); color: var(--bg); font-size: 10px; font-weight: 600; padding: 4px 10px; letter-spacing: 0.06em; text-transform: uppercase; }
         .cta-section { padding: 24px 48px 64px; text-align: center; }
         .cta-btn { display: inline-block; font-size: 11px; font-weight: 600; color: var(--gold); background: transparent; border: 1px dashed var(--gold); padding: 14px 32px; letter-spacing: 0.14em; text-transform: uppercase; }
         .cta-btn:hover { background: rgba(212, 175, 55, 0.06); }

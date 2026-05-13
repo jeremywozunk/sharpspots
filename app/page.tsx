@@ -18,9 +18,9 @@ interface GamePick {
 
 function StarRating({ score }: { score: number }) {
   return (
-    <div style={{ color: 'var(--gold)', fontSize: 14, letterSpacing: 3 }}>
+    <div style={{ color: 'var(--jade)', fontSize: 14, letterSpacing: 3 }}>
       {[1, 2, 3, 4, 5].map((i) => (
-        <span key={i} style={{ color: i <= score ? 'var(--gold)' : 'var(--star-empty)' }}>
+        <span key={i} style={{ color: i <= score ? 'var(--jade)' : 'var(--star-empty)' }}>
           ★
         </span>
       ))}
@@ -58,9 +58,35 @@ function getGameTimeDisplay(gameDate: string): string {
 }
 
 async function getTopPicks(): Promise<GamePick[]> {
+  // Compute today's ET calendar window so yesterday's picks fall off
+  // automatically when the date rolls over. Same Intl-based offset probe
+  // as /[league]/page.tsx — handles DST without hardcoding.
+  const now = new Date();
+  const etParts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/New_York',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(now);
+  const etYear = etParts.find(p => p.type === 'year')!.value;
+  const etMonth = etParts.find(p => p.type === 'month')!.value;
+  const etDay = etParts.find(p => p.type === 'day')!.value;
+
+  const probe = new Date(`${etYear}-${etMonth}-${etDay}T12:00:00Z`);
+  const probeHourET = parseInt(new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York', hour: '2-digit', hour12: false,
+  }).format(probe), 10);
+  const etOffsetHours = 12 - probeHourET;
+
+  const etDayStartUTC = new Date(`${etYear}-${etMonth}-${etDay}T00:00:00Z`).getTime()
+                       + etOffsetHours * 60 * 60 * 1000;
+  const startOfDay = new Date(etDayStartUTC).toISOString();
+  const endOfDay = new Date(etDayStartUTC + 24 * 60 * 60 * 1000 - 1).toISOString();
+
   const res = await client.getEntries({
     content_type: 'gamePick',
     'fields.status': 'live',
+    'fields.pageType': 'pick',
+    'fields.gameDate[gte]': startOfDay,
+    'fields.gameDate[lte]': endOfDay,
     order: ['-fields.confidenceScore'],
     limit: 5,
   });
@@ -79,7 +105,8 @@ export default async function Home() {
         .hero p { font-size: 14px; color: var(--gray-muted); line-height: 1.65; max-width: 540px; margin: 0 auto; }
         .section-header { display: flex; flex-direction: column; align-items: center; padding: 40px 48px 24px; gap: 18px; }
         .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; color: var(--gray-muted); text-transform: uppercase; }
-        .parlay-btn { font-size: 11px; font-weight: 600; color: var(--gold); background: transparent; border: 1px dashed var(--gold); padding: 12px 28px; letter-spacing: 0.12em; text-transform: uppercase; }
+        .parlay-btn { font-size: 11px; font-weight: 600; color: var(--jade); background: transparent; border: 1px dashed var(--jade); padding: 12px 28px; letter-spacing: 0.12em; text-transform: uppercase; }
+        .parlay-btn:hover { background: rgba(74, 222, 128, 0.06); }
         .card-list { padding: 0 48px; }
         .card { padding: 28px 0 28px 28px; border-bottom: 1px solid var(--border-subtle); border-left: 1px solid var(--jade); display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; color: inherit; }
         .card:hover { background: rgba(74, 222, 128, 0.04); }
@@ -90,8 +117,8 @@ export default async function Home() {
         .card-teaser { font-family: var(--font-prose); font-size: 13px; color: var(--gray-muted); line-height: 1.6; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .play-stripe { display: inline-block; font-size: 10px; font-weight: 600; color: var(--jade); border-top: 2px solid var(--jade); border-bottom: 2px solid var(--jade); padding: 6px 14px; letter-spacing: 0.1em; text-transform: uppercase; }
         .card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; flex-shrink: 0; }
-        .ev-badge { color: var(--jade); font-size: 11px; font-weight: 600; padding: 5px 12px; border: 1px solid var(--jade); white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
-        .view-link { font-size: 11px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
+        .ev-badge { background: var(--jade); color: var(--bg); font-size: 11px; font-weight: 600; padding: 5px 12px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
+        .view-link { font-size: 11px; color: var(--cream); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
         .empty { padding: 48px; font-family: var(--font-prose); font-style: italic; color: var(--gray-muted); font-size: 15px; text-align: center; }
         .hiw { padding: 80px 48px; background: var(--bg-2); border-top: 1px solid var(--border-subtle); margin-top: 60px; }
         .hiw-title { font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 28px; margin-bottom: 36px; color: var(--fg); text-align: center; }

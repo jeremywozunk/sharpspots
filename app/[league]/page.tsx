@@ -150,8 +150,8 @@ export default async function LeaguePage({ params }: PageProps) {
         .card-teaser { font-family: var(--font-prose); font-size: 13px; color: var(--gray-muted); line-height: 1.6; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .card-play { display: inline-block; font-size: 10px; font-weight: 600; color: var(--jade); border-top: 2px solid var(--jade); border-bottom: 2px solid var(--jade); padding: 6px 14px; letter-spacing: 0.1em; text-transform: uppercase; }
         .card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; flex-shrink: 0; }
-        .ev-badge { color: var(--jade); font-size: 11px; font-weight: 600; padding: 5px 12px; border: 1px solid var(--jade); white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
-        .view-link { font-size: 11px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
+        .ev-badge { background: var(--jade); color: var(--bg); font-size: 11px; font-weight: 600; padding: 5px 12px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
+        .view-link { font-size: 11px; color: var(--cream); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
         @media (max-width: 768px) {
           .league-header { padding: 40px 20px 24px; }
           .league-h1 { font-size: 44px; }

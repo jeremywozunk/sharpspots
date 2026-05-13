@@ -195,7 +195,7 @@ export default async function TrackRecordPage() {
         .result-pill { padding: 4px 12px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; align-self: center; flex-shrink: 0; }
         .result-pill.W { color: var(--jade); border-color: var(--jade); }
         .result-pill.L { color: #d97766; border-color: #d97766; }
-        .result-pill.Push { color: var(--gold); border-color: var(--gold); }
+        .result-pill.Push { color: var(--cream); border-color: var(--cream); }
         .result-pill.Void { color: var(--gray-muted); border-color: var(--gray-muted); }
         .disclaimer { padding: 24px 48px; font-size: 11px; color: var(--gray-muted); font-style: italic; max-width: 720px; margin: 0 auto; text-align: center; line-height: 1.7; }
         @media (max-width: 768px) {

@@ -5,13 +5,15 @@
   --bg: #0e1612;
   --bg-2: #0a110d;
   --jade: #4ade80;
-  --gold: #d4af37;
+  --jade-dark: #08130d;
+  --cream: #c8d6cd;
   --gray-border: #5a6a62;
   --gray-muted: #8a9a8e;
   --fg: #e8f5ed;
   --fg-muted: #5a8a6e;
-  --star-empty: #3d3018;
+  --star-empty: #2a3f30;
   --border-subtle: #2a3f30;
+  --gold: #4ade80;
   --font-brand: 'Bebas Neue', 'Oswald', Arial Black, sans-serif;
   --font-display: 'Playfair Display', Georgia, serif;
   --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
