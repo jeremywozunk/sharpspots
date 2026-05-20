@@ -69,6 +69,34 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  // Blog index + individual post pages
+  const blogStaticRoutes: MetadataRoute.Sitemap = [
+    {
+      url: `${SITE_URL}/blog`,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+  ];
+  let blogRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const blogRes = await client.getEntries({
+      content_type: 'blogPost',
+      'fields.status': 'live',
+      limit: 200,
+      select: ['sys.id', 'sys.updatedAt', 'fields.slug', 'fields.publishedDate'] as any,
+    });
+    blogRoutes = (blogRes.items as any[])
+      .filter((entry) => entry.fields.slug)
+      .map((entry) => ({
+        url: `${SITE_URL}/blog/${entry.fields.slug}`,
+        lastModified: new Date(entry.sys.updatedAt),
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+      }));
+  } catch (err) {
+    console.error('Sitemap: failed to fetch blogPost entries', err);
+  }
+
   // Game pick pages — pulled live from Contentful so every published entry
   // appears in the sitemap on next Vercel rebuild.
   let gameRoutes: MetadataRoute.Sitemap = [];
@@ -98,5 +126,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Sitemap: failed to fetch gamePick entries', err);
   }
 
-  return [...staticRoutes, ...leagueRoutes, ...gameRoutes];
+  return [...staticRoutes, ...leagueRoutes, ...blogStaticRoutes, ...blogRoutes, ...gameRoutes];
 }
