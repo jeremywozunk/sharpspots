@@ -76,17 +76,21 @@ async function getTopPicks(): Promise<GamePick[]> {
   }).format(probe), 10);
   const etOffsetHours = 12 - probeHourET;
 
-  const etDayStartUTC = new Date(`${etYear}-${etMonth}-${etDay}T00:00:00Z`).getTime()
-                       + etOffsetHours * 60 * 60 * 1000;
-  const startOfDay = new Date(etDayStartUTC).toISOString();
-  const endOfDay = new Date(etDayStartUTC + 24 * 60 * 60 * 1000 - 1).toISOString();
+  // Use exact-date equality on the ET calendar day. The Contentful gameDate
+  // field is a DATE type (YYYY-MM-DD), and [gte]/[lte] range queries against
+  // ISO timestamps do lexical string comparison, which produces wrong results
+  // ("2026-05-21" < "2026-05-21T04:00:00Z"). See [league]/page.tsx for full
+  // diagnosis. May 21, 2026 fix.
+  const todayEtCalendar = `${etYear}-${etMonth}-${etDay}`;
+  // Suppress the now-unused offset-derived UTC bounds — kept for parity in
+  // case we ever need ISO timestamps for non-date filters.
+  void etOffsetHours;
 
   const res = await client.getEntries({
     content_type: 'gamePick',
     'fields.status': 'live',
     'fields.pageType': 'pick',
-    'fields.gameDate[gte]': startOfDay,
-    'fields.gameDate[lte]': endOfDay,
+    'fields.gameDate': todayEtCalendar,
     order: ['-fields.confidenceScore'],
     limit: 5,
   });

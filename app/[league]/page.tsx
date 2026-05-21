@@ -117,12 +117,23 @@ export default async function LeaguePage({ params }: PageProps) {
 
   const todayEtCalendar = `${etYear}-${etMonth}-${etDay}`;
 
+  // BUG FIX (May 21, 2026 night): two bugs in the original filter ate every
+  // live pick since launch.
+  //   1. `fields.league` was queried with the UPPERCASE display value
+  //      ("MLB", "NBA"...) but n8n writes entries with lowercase slugs
+  //      ("mlb", "nba"...). Contentful equality is case-sensitive → 0 hits.
+  //   2. `fields.gameDate` is a Contentful DATE type (YYYY-MM-DD), not a
+  //      datetime. Querying [gte] / [lte] against ISO timestamps does
+  //      lexical comparison: "2026-05-21" < "2026-05-21T04:00:00Z" so
+  //      same-day entries fall outside the window while NEXT day's plain
+  //      dates lexically compare past the window-start and accidentally
+  //      match. Switching to exact-date equality on the ET calendar day
+  //      ('fields.gameDate' = "2026-05-21") matches exactly what n8n stores.
   const entries = await client.getEntries({
     content_type: 'gamePick',
-    'fields.league': leagueDisplay,
+    'fields.league': leagueSlug,
     'fields.status': 'live',
-    'fields.gameDate[gte]': startOfDay.toISOString(),
-    'fields.gameDate[lte]': endOfDay.toISOString(),
+    'fields.gameDate': todayEtCalendar,
     order: ['fields.gameDate'],
   });
 

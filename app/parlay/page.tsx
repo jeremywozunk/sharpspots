@@ -79,16 +79,24 @@ function buildGameUrl(pick: any): string {
 }
 
 export default async function ParlayPage() {
+  // Get today's ET calendar date via Intl probe (same pattern as /page.tsx
+  // and /[league]/page.tsx). DATE-type equality, not ISO-timestamp range.
+  // May 21, 2026 fix — see [league]/page.tsx for full bug rationale.
   const now = new Date();
-  const etDate = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
-  const startOfDay = new Date(etDate.getFullYear(), etDate.getMonth(), etDate.getDate(), 0, 0, 0);
-  const endOfDay = new Date(etDate.getFullYear(), etDate.getMonth(), etDate.getDate(), 23, 59, 59);
+  const etParts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/New_York',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(now);
+  const etYear = etParts.find(p => p.type === 'year')!.value;
+  const etMonth = etParts.find(p => p.type === 'month')!.value;
+  const etDay = etParts.find(p => p.type === 'day')!.value;
+  const todayEtCalendar = `${etYear}-${etMonth}-${etDay}`;
+  const etDate = new Date(`${todayEtCalendar}T12:00:00Z`);
 
   const entries = await client.getEntries({
     content_type: 'gamePick',
     'fields.status': 'live',
-    'fields.gameDate[gte]': startOfDay.toISOString(),
-    'fields.gameDate[lte]': endOfDay.toISOString(),
+    'fields.gameDate': todayEtCalendar,
     order: ['-fields.confidenceScore'],
   });
 

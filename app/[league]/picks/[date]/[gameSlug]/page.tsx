@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: PageProps) {
   const entries = await client.getEntries({
     content_type: 'gamePick',
     'fields.slug': gameSlug,
-    'fields.league': league.toUpperCase(),
+    'fields.league': league.toLowerCase(),
     limit: 1,
   });
   if (entries.items.length === 0) return { title: 'Pick Not Found | SharpSpots' };
@@ -39,7 +39,7 @@ export default async function GamePage({ params }: PageProps) {
   const entries = await client.getEntries({
     content_type: 'gamePick',
     'fields.slug': gameSlug,
-    'fields.league': league.toUpperCase(),
+    'fields.league': league.toLowerCase(),
     limit: 1,
   });
   if (entries.items.length === 0) notFound();
