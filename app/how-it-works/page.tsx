@@ -95,34 +95,39 @@ export default function HowItWorksPage() {
 
       <div className="hiw-hero">
         <h1>How <em>SharpSpots</em> works</h1>
-        <p>We find mathematical edges in betting markets using algorithms, then explain them in plain English. The math does the heavy lifting; we just translate.</p>
+        <p>Every morning, we run every game through a three-pillar model that quantifies statistical edge, situational context, and what the market is doing. When all three agree, the pick gets more stars. When they disagree, fewer stars. Nothing is subjective.</p>
       </div>
 
       <section className="hiw-section">
         <div className="h2-sub">The Daily Rhythm</div>
-        <h2>When picks drop, and how often they refresh</h2>
-        <p>Every day, our system scans every game across the leagues we cover. Picks publish in two waves depending on how volatile the sport is, and refresh as game time approaches.</p>
+        <h2>When picks drop, and how they refresh</h2>
+        <p>Different sports settle their lineups at different times, so picks publish on a per-sport schedule. Lines keep moving after publication, so we re-pull the market every couple of hours and update the expected value on the page.</p>
 
         <div className="rhythm-stack">
           <div className="rhythm-card">
-            <div className="rhythm-time">10 PM ET — Night Before</div>
-            <div className="rhythm-title">Stable sports drop early</div>
-            <div className="rhythm-desc">NFL, college football, MLS, EPL, Champions League, UFC. These typically have settled rosters by evening, so picks publish the night before.</div>
+            <div className="rhythm-time">6 AM ET — NBA</div>
+            <div className="rhythm-title">Basketball drops at sunrise</div>
+            <div className="rhythm-desc">Once injury reports settle overnight, we run the full slate. Picks go live before most people are awake. The page is ready when you open your phone.</div>
           </div>
           <div className="rhythm-card">
-            <div className="rhythm-time">6 AM ET — Same Day</div>
-            <div className="rhythm-title">Volatile sports drop morning of</div>
-            <div className="rhythm-desc">MLB, NBA, NHL, college basketball. Pitcher confirmations, injury reports, and lineup scratches change overnight, so we wait for the latest data.</div>
+            <div className="rhythm-time">12 PM ET — MLB Morning Pass</div>
+            <div className="rhythm-title">Day games + early-evening starts</div>
+            <div className="rhythm-desc">Once probable pitchers are confirmed for the day's slate, we run analysis. Picks for any game starting before 6 PM ET publish here.</div>
+          </div>
+          <div className="rhythm-card">
+            <div className="rhythm-time">4:30 PM ET — MLB Evening Pass</div>
+            <div className="rhythm-title">Prime-time and West Coast slate</div>
+            <div className="rhythm-desc">Late lineup scratches and west-coast pitcher confirmations land between noon and 4 PM, so the evening pass catches the night slate with fresh data.</div>
           </div>
           <div className="rhythm-card">
             <div className="rhythm-time">~2 Hours Pre-Game</div>
             <div className="rhythm-title">Lines refresh, EV recalculates</div>
-            <div className="rhythm-desc">Sportsbook lines move all day. We pull the current line for every game right before tipoff and update the expected value on each pick.</div>
+            <div className="rhythm-desc">Lines drift all day. About two hours before tipoff or first pitch, we re-pull current odds for every active pick and update the expected value shown on the page.</div>
           </div>
           <div className="rhythm-card future">
             <div className="rhythm-time">Coming Soon</div>
-            <div className="rhythm-title">Daily email + live X/Twitter</div>
-            <div className="rhythm-desc">A morning &quot;State of Play&quot; email lands in your inbox before coffee. Our Twitter account posts the top picks of the day and refresh alerts as lines move.</div>
+            <div className="rhythm-title">Daily email + more leagues</div>
+            <div className="rhythm-desc">NFL, NHL, and college basketball next. A morning &quot;State of Play&quot; email is in the queue once the cross-sport schedule stabilizes.</div>
           </div>
         </div>
       </section>
@@ -130,90 +135,116 @@ export default function HowItWorksPage() {
       <section className="hiw-section">
         <div className="h2-sub">Our Process</div>
         <h2>How a pick gets made</h2>
-        <p>Each game runs through five steps before anything appears on the site. The whole process is automated end-to-end, with the math driving every call.</p>
+        <p>Each game runs through five steps. Steps 1 and 2 happen in parallel for every game on the slate. Steps 3 through 5 happen per game.</p>
 
         <div className="steps">
           <div className="step-row">
             <div className="step-num">01</div>
             <div className="step-content">
-              <h3>Scan every game</h3>
-              <p>We pull schedules, stats, injuries, and odds across every game in every league we cover. That's hundreds of games on a peak day.</p>
+              <h3>Pull the data</h3>
+              <p>For every game on the slate, we fetch the matchup, probable starters or active lineups, recent performance, ballpark and weather (for MLB), bullpen workload (for MLB), bench depth (for NBA), and current odds from every major US sportsbook plus Pinnacle.</p>
             </div>
           </div>
           <div className="step-row">
             <div className="step-num">02</div>
             <div className="step-content">
-              <h3>Calculate true odds</h3>
-              <p>For each game, our model calculates what the odds <em>should</em> be based on team strength, situational factors, and recent performance. We strip out the sportsbook's vig to get a fair-odds baseline.</p>
+              <h3>Fire the three pillars</h3>
+              <p>The model evaluates the game against three independent groups of signals — <strong>statistical</strong>, <strong>situational</strong>, and <strong>market</strong> — described below. Each pillar produces a directional lean (home / away / neither) and a strength score.</p>
             </div>
           </div>
           <div className="step-row">
             <div className="step-num">03</div>
             <div className="step-content">
-              <h3>Identify edges</h3>
-              <p>If the sportsbook's line is meaningfully different from our true-odds calculation, that's an edge. We only flag bets where the expected value clears a strict threshold.</p>
+              <h3>Project the game</h3>
+              <p>Pillar outputs feed a Bayesian aggregator that produces a probability distribution over outcomes (win probability, projected total). We strip the vig out of the sportsbook's line to get its implied true probability, then compare.</p>
             </div>
           </div>
           <div className="step-row">
             <div className="step-num">04</div>
             <div className="step-content">
               <h3>Score confidence</h3>
-              <p>Not every edge is created equal. We weight things like edge size, line movement direction, key player availability, and historical accuracy of similar setups. The result is a 1-5 star rating you'll see on every pick.</p>
+              <p>Stars are assigned by how many pillars fired in the same direction and how strongly. One pillar firing alone caps the pick at 2 stars. Two pillars agreeing can reach 4 stars. All three pillars agreeing is required for 5. April and May get an extra one-tier penalty because sample sizes are too small to fully trust.</p>
             </div>
           </div>
           <div className="step-row">
             <div className="step-num">05</div>
             <div className="step-content">
               <h3>Publish in plain English</h3>
-              <p>The math is the hard part. The output is short, readable, and explains the situational angle, the statistical mismatch, and what the market is missing.</p>
+              <p>A language model translates the numbers into the kind of paragraph you'd read in a sharp's newsletter. Stylistic guardrails ban hype phrases, em-dashes, and AI tells. The math drives every claim.</p>
             </div>
           </div>
         </div>
       </section>
 
       <section className="hiw-section">
+        <div className="h2-sub">The Three Pillars</div>
+        <h2>What we actually measure</h2>
+        <p>This is the part most sites won't show you. The signals below are the ones currently firing in production. As we add data sources, the pillars get heavier.</p>
+
+        <div className="rhythm-stack">
+          <div className="rhythm-card">
+            <div className="rhythm-time">Pillar 1 — Statistical</div>
+            <div className="rhythm-title">Who's better on paper</div>
+            <div className="rhythm-desc">For MLB: starter SIERA differential, hitter wOBA against the opposing pitcher's handedness (PA-weighted by lineup spot), and a rolling 21-day SIERA to catch hot or cold streaks. For NBA: net rating differential, pace-adjusted offensive and defensive efficiency, and rest differential.</div>
+          </div>
+          <div className="rhythm-card">
+            <div className="rhythm-time">Pillar 2 — Situational</div>
+            <div className="rhythm-title">What's different about today</div>
+            <div className="rhythm-desc">For MLB: bullpen quality (K-BB% from FanGraphs's reliever leaderboard) and workload (taxed bullpens from recent usage), ballpark factors, and weather (wind, temperature, Coors). For NBA: starter availability via injury report, back-to-back fatigue, and travel.</div>
+          </div>
+          <div className="rhythm-card">
+            <div className="rhythm-time">Pillar 3 — Market</div>
+            <div className="rhythm-title">What sharp money is doing</div>
+            <div className="rhythm-desc">Two market signals fire here. First, line-movement detection: if a line moves 15+ cents on moneyline or 0.5+ runs on a total across multiple books in the same direction, that's sharp money showing up. Second, Pinnacle divergence: when the rec books (DraftKings, FanDuel) are at a different number than Pinnacle (the sharpest book in the world), the rec books usually haven't caught up to where sharp action has already moved Pinnacle.</div>
+          </div>
+        </div>
+
+        <p>Each pillar can fire in favor of either team or stay silent if its signals contradict each other. The signals within a pillar use weights tuned from historical data. The pillars themselves are not weighted equally — the situational pillar earns the most weight when its underlying data is strong (e.g., a confirmed bullpen-taxed game) and less when it isn't.</p>
+      </section>
+
+      <section className="hiw-section">
         <div className="h2-sub">Confidence Stars</div>
         <h2>What the stars actually mean</h2>
-        <p>The 1-5 star rating on every pick isn't subjective. It's calculated from a handful of factors that boost or reduce our confidence in the underlying math.</p>
+        <p>The 1-5 star rating is calculated, not assigned. Two inputs drive it: how many pillars fired in the same direction (the agreement count) and how big the calculated edge is. Both have to clear a threshold.</p>
 
         <div className="confidence-grid">
           <div className="conf-card boost">
             <div className="conf-label">↑ Boosts</div>
-            <div className="conf-text">Larger edge, sharp money signal (line moves opposite of public betting), historically reliable setup, key players confirmed active.</div>
+            <div className="conf-text">Larger calculated edge over the no-vig line, all three pillars agreeing on a direction, confirmed starting pitcher or lineup, line moving toward our side across multiple books.</div>
           </div>
           <div className="conf-card penalty">
             <div className="conf-label">↓ Reduces</div>
-            <div className="conf-text">Smaller edge, line moving against our pick, star player questionable or out, recent variance against similar setups.</div>
+            <div className="conf-text">Only one pillar firing, line moving against our side, key player downgrade pre-game, early-season cap (April and May drop every pick by one tier across all sports).</div>
           </div>
         </div>
 
-        <p>Higher stars don't mean a pick is "safe." Betting always involves variance. They mean we have more confidence in the underlying math.</p>
+        <p>Higher stars don't mean a pick is "safe." Variance is built into every bet. Stars are information about how much the model trusts the math underneath.</p>
 
         <div className="stars-reality">
-          <div className="stars-reality-title">A reality check</div>
+          <div className="stars-reality-title">What each tier corresponds to</div>
           <div className="stars-row">
             <span className="stars">★★★★★</span>
-            <span className="meaning">Strongest edge with multiple confirming signals</span>
+            <span className="meaning">All three pillars agree, large edge. Recommended stake: 3 units.</span>
           </div>
           <div className="stars-row">
             <span className="stars">★★★★☆</span>
-            <span className="meaning">Solid edge with mostly favorable factors</span>
+            <span className="meaning">Two pillars firing strongly, meaningful edge. Recommended stake: 2 units.</span>
           </div>
           <div className="stars-row">
             <span className="stars">★★★☆☆</span>
-            <span className="meaning">Real edge with mixed signals</span>
+            <span className="meaning">Real edge, mixed pillar signals. Recommended stake: 1 unit.</span>
           </div>
           <div className="stars-row">
             <span className="stars">★★☆☆☆</span>
-            <span className="meaning">Modest edge with more variance expected</span>
+            <span className="meaning">Modest edge, one pillar firing. Recommended stake: 0.5 units.</span>
           </div>
           <div className="stars-row">
             <span className="stars">★☆☆☆☆</span>
-            <span className="meaning">Marginal edge, included for transparency</span>
+            <span className="meaning">Marginal edge below our recommended bet threshold. Shown for transparency; no recommended play. Does not count in Track Record.</span>
           </div>
         </div>
 
-        <p>A 5-star pick can still lose. A 2-star pick is a tighter edge with thinner margin for error. <strong>The star rating is information about the math, not a recommendation.</strong></p>
+        <p>A 5-star pick can still lose. A 2-star pick is a tighter edge with thinner margin for error. <strong>The star rating is information about the math, not a recommendation.</strong> Track our actual results on the <Link href="/track-record" style={{ color: 'var(--gold)' }}>Track Record</Link> page.</p>
       </section>
 
       <section className="hiw-section">
@@ -221,7 +252,7 @@ export default function HowItWorksPage() {
           <h2>What we don't do</h2>
           <ul className="wwd-list">
             <li><strong>Hype language.</strong> You won't see "lock of the day" or guaranteed winners. Every pick has variance built in.</li>
-            <li><strong>Human handicappers.</strong> The site is driven by artificial intelligence.</li>
+            <li><strong>Human handicappers.</strong> No tipsters, no touts, no gut feel. The picks come from algorithms running on real data. A language model writes the paragraph, but the pick itself is math.</li>
             <li><strong>Promises about outcomes.</strong> We're confident in the process. Any single game can go either way.</li>
             <li><strong>Paywalls on the analysis.</strong> The picks and reasoning are free. Always.</li>
             <li><strong>Claims to be financial or professional advisors.</strong> This is entertainment.</li>
