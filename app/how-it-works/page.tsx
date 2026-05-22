@@ -122,7 +122,7 @@ export default function HowItWorksPage() {
           <div className="rhythm-card future">
             <div className="rhythm-time">Coming Soon</div>
             <div className="rhythm-title">Daily email + live X/Twitter</div>
-            <div className="rhythm-desc">A morning "State of Play" email lands in your inbox before coffee. Our Twitter account posts the parlay of the day, individual picks, and refresh alerts as lines move.</div>
+            <div className="rhythm-desc">A morning &quot;State of Play&quot; email lands in your inbox before coffee. Our Twitter account posts the top picks of the day and refresh alerts as lines move.</div>
           </div>
         </div>
       </section>

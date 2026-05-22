@@ -18,12 +18,15 @@ interface GamePick {
 
 function StarRating({ score }: { score: number }) {
   return (
-    <div style={{ color: 'var(--jade)', fontSize: 14, letterSpacing: 3 }}>
+    <div className="star-rating" style={{ color: 'var(--jade)', fontSize: 14, letterSpacing: 3 }}>
       {[1, 2, 3, 4, 5].map((i) => (
         <span key={i} style={{ color: i <= score ? 'var(--jade)' : 'var(--star-empty)' }}>
           ★
         </span>
       ))}
+      <div className="metric-tip">
+        <strong>Confidence</strong> measures how many of our three independent pillars (statistical, sharp money, situational) agree on the same side. More stars = more pillars firing together. <strong>5★</strong> = 3u, <strong>4★</strong> = 2u, <strong>3★</strong> = 1u, <strong>2★</strong> = 0.5u, <strong>1★</strong> = informational only.
+      </div>
     </div>
   );
 }
@@ -106,11 +109,9 @@ export default async function Home() {
         .hero { padding: 80px 48px 64px; border-bottom: 1px solid var(--border-subtle); text-align: center; }
         .hero h1 { font-family: var(--font-display); font-style: italic; font-size: 44px; line-height: 1.18; margin-bottom: 18px; color: var(--fg); }
         .hero h1 em { font-style: italic; color: var(--jade); }
-        .hero p { font-size: 14px; color: var(--gray-muted); line-height: 1.65; max-width: 540px; margin: 0 auto; }
-        .section-header { display: flex; flex-direction: column; align-items: center; padding: 40px 48px 24px; gap: 18px; }
+        .hero p { font-size: 14px; color: var(--gray-muted); line-height: 1.65; max-width: 580px; margin: 0 auto; }
+        .section-header { display: flex; flex-direction: column; align-items: center; padding: 40px 48px 24px; gap: 10px; }
         .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; color: var(--gray-muted); text-transform: uppercase; }
-        .parlay-btn { font-size: 11px; font-weight: 600; color: var(--jade); background: transparent; border: 1px dashed var(--jade); padding: 12px 28px; letter-spacing: 0.12em; text-transform: uppercase; }
-        .parlay-btn:hover { background: rgba(74, 222, 128, 0.06); }
         .card-list { padding: 0 48px; }
         .card { padding: 28px 0 28px 28px; border-bottom: 1px solid var(--border-subtle); border-left: 1px solid var(--jade); display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; color: inherit; }
         .card:hover { background: rgba(74, 222, 128, 0.04); }
@@ -121,7 +122,11 @@ export default async function Home() {
         .card-teaser { font-family: var(--font-prose); font-size: 13px; color: var(--gray-muted); line-height: 1.6; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .play-stripe { display: inline-block; font-size: 10px; font-weight: 600; color: var(--jade); border-top: 2px solid var(--jade); border-bottom: 2px solid var(--jade); padding: 6px 14px; letter-spacing: 0.1em; text-transform: uppercase; }
         .card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; flex-shrink: 0; }
-        .ev-badge { background: var(--jade); color: var(--bg); font-size: 11px; font-weight: 600; padding: 5px 12px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
+        .ev-badge { background: var(--jade); color: var(--bg); font-size: 11px; font-weight: 600; padding: 5px 12px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; cursor: help; position: relative; }
+        .star-rating { cursor: help; position: relative; }
+        .metric-tip { position: absolute; right: 0; top: calc(100% + 8px); background: var(--bg); border: 1px solid var(--jade); padding: 10px 14px; width: 240px; z-index: 20; font-size: 11px; font-style: normal; color: var(--fg); line-height: 1.5; letter-spacing: 0.02em; text-transform: none; font-weight: 400; text-align: left; opacity: 0; pointer-events: none; transition: opacity 0.15s; }
+        .metric-tip strong { color: var(--jade); font-weight: 600; }
+        .ev-badge:hover .metric-tip, .star-rating:hover .metric-tip { opacity: 1; pointer-events: auto; }
         .view-link { font-size: 11px; color: var(--cream); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
         .empty { padding: 48px; font-family: var(--font-prose); font-style: italic; color: var(--gray-muted); font-size: 15px; text-align: center; }
         .hiw { padding: 80px 48px; background: var(--bg-2); border-top: 1px solid var(--border-subtle); margin-top: 60px; }
@@ -146,16 +151,15 @@ export default async function Home() {
 
       <div className="hero">
         <h1>
-          Smarter bets, backed by <em>real math.</em>
+          AI built on <em>time-tested frameworks.</em>
           <br />
-          Updated every morning.
+          A new edge, every morning.
         </h1>
-        <p>Algorithmic edge detection across the major leagues. Three independent pillars, fully explained.</p>
+        <p>Decades of sharp-betting principles, now run by AI across every major league at sunrise. Three independent pillars, fully explained.</p>
       </div>
 
       <div className="section-header">
         <div className="section-label">Today&apos;s Top Picks</div>
-        <Link className="parlay-btn" href="/parlay">Parlay of the Day</Link>
       </div>
 
       <div className="card-list">
@@ -174,7 +178,12 @@ export default async function Home() {
               <div className="play-stripe">{pick.fields.playToLine}</div>
             </div>
             <div className="card-right">
-              <span className="ev-badge">{pick.fields.evPercentage} EV</span>
+              <span className="ev-badge">
+                {pick.fields.evPercentage} EV
+                <span className="metric-tip">
+                  <strong>EV (Expected Value)</strong> is the model&apos;s edge against the sportsbook&apos;s price. <strong>+10% EV</strong> means a $100 bet returns $10 in expected profit over the long run, assuming the model is calibrated. Big underdog plays at long odds (e.g. +500 or more) tend to show very high EV but should be paired with high confidence (★) before sizing up.
+                </span>
+              </span>
               <StarRating score={pick.fields.confidenceScore} />
               <span className="view-link">View Analysis</span>
             </div>
