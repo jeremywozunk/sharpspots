@@ -162,6 +162,10 @@ export default async function LeaguePage({ params }: PageProps) {
         .card-play { display: inline-block; font-size: 10px; font-weight: 600; color: var(--jade); border-top: 2px solid var(--jade); border-bottom: 2px solid var(--jade); padding: 6px 14px; letter-spacing: 0.1em; text-transform: uppercase; }
         .card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; flex-shrink: 0; }
         .ev-badge { background: var(--jade); color: var(--bg); font-size: 11px; font-weight: 600; padding: 5px 12px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
+        .no-edge-badge { background: transparent; color: var(--gray-muted); border: 1px solid var(--gray-muted); font-size: 11px; font-weight: 600; padding: 4px 11px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
+        .card.no-pick { border-left-color: var(--gray-muted); opacity: 0.92; }
+        .card.no-pick .card-play { color: var(--gray-muted); border-color: var(--gray-muted); }
+        .no-pick-label { display: inline-block; font-size: 10px; font-weight: 600; color: var(--gray-muted); border-top: 2px solid var(--gray-muted); border-bottom: 2px solid var(--gray-muted); padding: 6px 14px; letter-spacing: 0.1em; text-transform: uppercase; }
         .view-link { font-size: 11px; color: var(--cream); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
         @media (max-width: 768px) {
           .league-header { padding: 40px 20px 24px; }
@@ -188,24 +192,40 @@ export default async function LeaguePage({ params }: PageProps) {
       )}
 
       <div className="card-list">
-        {picks.map((pick: any, idx: number) => (
-          <Link key={pick.sys.id} href={buildGameUrl(pick, leagueSlug)} className="card">
-            <div className="card-left">
-              <div className="edge-no">Edge No. {String(idx + 1).padStart(3, '0')}</div>
-              <div className="card-time">{getGameTimeDisplay(pick.fields.gameDate)}</div>
-              <div className="card-title">{(pick.fields as any).title}</div>
-              {(pick.fields as any).analysisParagraph1 && (
-                <div className="card-teaser">{getTeaserFromRichText((pick.fields as any).analysisParagraph1)}</div>
-              )}
-              <span className="card-play">{(pick.fields as any).playToLine}</span>
-            </div>
-            <div className="card-right">
-              <span className="ev-badge">{(pick.fields as any).evPercentage} EV</span>
-              <StarRating score={(pick.fields as any).confidenceScore} />
-              <span className="view-link">View Analysis</span>
-            </div>
-          </Link>
-        ))}
+        {picks.map((pick: any, idx: number) => {
+          const fields = pick.fields as any;
+          const isNoPick = fields.pageType === 'no-pick';
+          return (
+            <Link key={pick.sys.id} href={buildGameUrl(pick, leagueSlug)} className={`card${isNoPick ? ' no-pick' : ''}`}>
+              <div className="card-left">
+                <div className="edge-no">
+                  {isNoPick ? 'No Edge' : `Edge No. ${String(idx + 1).padStart(3, '0')}`}
+                </div>
+                <div className="card-time">{getGameTimeDisplay(fields.gameDate)}</div>
+                <div className="card-title">{fields.title}</div>
+                {fields.analysisParagraph1 && (
+                  <div className="card-teaser">{getTeaserFromRichText(fields.analysisParagraph1)}</div>
+                )}
+                {isNoPick ? (
+                  <span className="no-pick-label">Market priced fairly</span>
+                ) : (
+                  <span className="card-play">{fields.playToLine}</span>
+                )}
+              </div>
+              <div className="card-right">
+                {isNoPick ? (
+                  <span className="no-edge-badge">No Edge</span>
+                ) : (
+                  <>
+                    <span className="ev-badge">{fields.evPercentage} EV</span>
+                    <StarRating score={fields.confidenceScore} />
+                  </>
+                )}
+                <span className="view-link">View Analysis</span>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </>
   );
