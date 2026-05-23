@@ -134,7 +134,7 @@ export default async function LeaguePage({ params }: PageProps) {
     'fields.league': leagueSlug,
     'fields.status': 'live',
     'fields.gameDate': todayEtCalendar,
-    order: ['fields.gameDate'],
+    order: ['fields.tipoffIso'],
   });
 
   const picks = entries.items;
@@ -201,7 +201,7 @@ export default async function LeaguePage({ params }: PageProps) {
                 <div className="edge-no">
                   {isNoPick ? 'No Edge' : `Edge No. ${String(idx + 1).padStart(3, '0')}`}
                 </div>
-                <div className="card-time">{getGameTimeDisplay(fields.gameDate)}</div>
+                <div className="card-time">{getGameTimeDisplay((fields as any).tipoffIso || fields.gameDate)}</div>
                 <div className="card-title">{fields.title}</div>
                 {fields.analysisParagraph1 && (
                   <div className="card-teaser">{getTeaserFromRichText(fields.analysisParagraph1)}</div>

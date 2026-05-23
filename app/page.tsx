@@ -11,6 +11,8 @@ interface GamePick {
     playToLine: string;
     evPercentage: string;
     gameDate: string;
+    tipoffIso?: string;
+    pageType?: 'pick' | 'no-pick';
     confidenceScore: number;
     analysisParagraph1: any;
   };
@@ -44,8 +46,11 @@ function getTeaserFromRichText(richText: any): string {
 }
 
 function buildGameUrl(pick: GamePick): string {
-  const date = new Date(pick.fields.gameDate);
-  const dateStr = date.toISOString().split('T')[0];
+  // Prefer plain gameDate (YYYY-MM-DD) since the URL date should match
+  // the same value the n8n slug builder used. Fall back to deriving from
+  // tipoffIso if gameDate is missing.
+  const dateStr = (pick.fields.gameDate || '').slice(0, 10)
+    || (pick.fields.tipoffIso ? new Date(pick.fields.tipoffIso).toISOString().split('T')[0] : '');
   const league = pick.fields.league.toLowerCase();
   return `/${league}/picks/${dateStr}/${pick.fields.slug}`;
 }
@@ -60,7 +65,7 @@ function getGameTimeDisplay(gameDate: string): string {
   });
 }
 
-async function getTopPicks(): Promise<GamePick[]> {
+async function getTodaysGames(): Promise<GamePick[]> {
   // Compute today's ET calendar window so yesterday's picks fall off
   // automatically when the date rolls over. Same Intl-based offset probe
   // as /[league]/page.tsx — handles DST without hardcoding.
@@ -92,16 +97,15 @@ async function getTopPicks(): Promise<GamePick[]> {
   const res = await client.getEntries({
     content_type: 'gamePick',
     'fields.status': 'live',
-    'fields.pageType': 'pick',
     'fields.gameDate': todayEtCalendar,
-    order: ['-fields.confidenceScore'],
-    limit: 5,
+    order: ['fields.tipoffIso'],
+    limit: 50,
   });
   return res.items as unknown as GamePick[];
 }
 
 export default async function Home() {
-  const picks = await getTopPicks();
+  const picks = await getTodaysGames();
 
   return (
     <>
@@ -123,6 +127,9 @@ export default async function Home() {
         .play-stripe { display: inline-block; font-size: 10px; font-weight: 600; color: var(--jade); border-top: 2px solid var(--jade); border-bottom: 2px solid var(--jade); padding: 6px 14px; letter-spacing: 0.1em; text-transform: uppercase; }
         .card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; flex-shrink: 0; }
         .ev-badge { background: var(--jade); color: var(--bg); font-size: 11px; font-weight: 600; padding: 5px 12px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; cursor: help; position: relative; }
+        .no-edge-badge { background: transparent; color: var(--gray-muted); border: 1px solid var(--gray-muted); font-size: 11px; font-weight: 600; padding: 4px 11px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
+        .card.no-pick { border-left-color: var(--gray-muted); opacity: 0.92; }
+        .no-pick-label { display: inline-block; font-size: 10px; font-weight: 600; color: var(--gray-muted); border-top: 2px solid var(--gray-muted); border-bottom: 2px solid var(--gray-muted); padding: 6px 14px; letter-spacing: 0.1em; text-transform: uppercase; }
         .star-rating { cursor: help; position: relative; }
         .metric-tip { position: absolute; right: 0; top: calc(100% + 8px); background: var(--bg); border: 1px solid var(--jade); padding: 10px 14px; width: 240px; z-index: 20; font-size: 11px; font-style: normal; color: var(--fg); line-height: 1.5; letter-spacing: 0.02em; text-transform: none; font-weight: 400; text-align: left; opacity: 0; pointer-events: none; transition: opacity 0.15s; }
         .metric-tip strong { color: var(--jade); font-weight: 600; }
@@ -159,36 +166,52 @@ export default async function Home() {
       </div>
 
       <div className="section-header">
-        <div className="section-label">Today&apos;s Top Picks</div>
+        <div className="section-label">Today&apos;s Games</div>
       </div>
 
       <div className="card-list">
         {picks.length === 0 && (
-          <div className="empty">No picks available today. Check back tomorrow morning.</div>
+          <div className="empty">No games on the slate today. Check back tomorrow morning.</div>
         )}
-        {picks.map((pick, idx) => (
-          <Link key={pick.sys.id} href={buildGameUrl(pick)} className="card">
-            <div className="card-left">
-              <div className="edge-no">Edge No. {String(idx + 1).padStart(3, '0')}</div>
-              <div className="card-league">{pick.fields.league} - {getGameTimeDisplay(pick.fields.gameDate)}</div>
-              <div className="card-title">{pick.fields.title}</div>
-              {pick.fields.analysisParagraph1 && (
-                <div className="card-teaser">{getTeaserFromRichText(pick.fields.analysisParagraph1)}</div>
-              )}
-              <div className="play-stripe">{pick.fields.playToLine}</div>
-            </div>
-            <div className="card-right">
-              <span className="ev-badge">
-                {pick.fields.evPercentage} EV
-                <span className="metric-tip">
-                  <strong>EV (Expected Value)</strong> is the model&apos;s edge against the sportsbook&apos;s price. <strong>+10% EV</strong> means a $100 bet returns $10 in expected profit over the long run, assuming the model is calibrated. Big underdog plays at long odds (e.g. +500 or more) tend to show very high EV but should be paired with high confidence (★) before sizing up.
-                </span>
-              </span>
-              <StarRating score={pick.fields.confidenceScore} />
-              <span className="view-link">View Analysis</span>
-            </div>
-          </Link>
-        ))}
+        {picks.map((pick, idx) => {
+          const isNoPick = pick.fields.pageType === 'no-pick';
+          const timeStr = getGameTimeDisplay(pick.fields.tipoffIso || pick.fields.gameDate);
+          return (
+            <Link key={pick.sys.id} href={buildGameUrl(pick)} className={`card${isNoPick ? ' no-pick' : ''}`}>
+              <div className="card-left">
+                <div className="edge-no">
+                  {isNoPick ? 'No Edge' : `Edge No. ${String(idx + 1).padStart(3, '0')}`}
+                </div>
+                <div className="card-league">{(pick.fields.league || '').toUpperCase()} - {timeStr}</div>
+                <div className="card-title">{pick.fields.title}</div>
+                {pick.fields.analysisParagraph1 && (
+                  <div className="card-teaser">{getTeaserFromRichText(pick.fields.analysisParagraph1)}</div>
+                )}
+                {isNoPick ? (
+                  <div className="no-pick-label">Market priced fairly</div>
+                ) : (
+                  <div className="play-stripe">{pick.fields.playToLine}</div>
+                )}
+              </div>
+              <div className="card-right">
+                {isNoPick ? (
+                  <span className="no-edge-badge">No Edge</span>
+                ) : (
+                  <>
+                    <span className="ev-badge">
+                      {pick.fields.evPercentage} EV
+                      <span className="metric-tip">
+                        <strong>EV (Expected Value)</strong> is the model&apos;s edge against the sportsbook&apos;s price. <strong>+10% EV</strong> means a $100 bet returns $10 in expected profit over the long run, assuming the model is calibrated. Big underdog plays at long odds (e.g. +500 or more) tend to show very high EV but should be paired with high confidence (★) before sizing up.
+                      </span>
+                    </span>
+                    <StarRating score={pick.fields.confidenceScore} />
+                  </>
+                )}
+                <span className="view-link">View Analysis</span>
+              </div>
+            </Link>
+          );
+        })}
       </div>
 
       <div className="hiw">
