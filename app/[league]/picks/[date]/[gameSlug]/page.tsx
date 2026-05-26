@@ -45,9 +45,16 @@ export default async function GamePage({ params }: PageProps) {
   if (entries.items.length === 0) notFound();
   const pick = entries.items[0].fields as any;
 
-  const gameDate = new Date(pick.gameDate);
-  const dateDisplay = gameDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' });
-  const timeDisplay = gameDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York', timeZoneName: 'short' });
+  // Use tipoffIso (full datetime, populated since May 22, 2026) for accurate
+  // ET-local display. Fall back to gameDate parsed at noon ET so the date
+  // doesn't UTC-shift back a day (off-by-one bug when gameDate is plain
+  // YYYY-MM-DD — JS parses it as UTC midnight, which is the previous day
+  // in any westward timezone).
+  const gameInstant = pick.tipoffIso
+    ? new Date(pick.tipoffIso)
+    : new Date(`${pick.gameDate}T12:00:00-04:00`);
+  const dateDisplay = gameInstant.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' });
+  const timeDisplay = gameInstant.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York', timeZoneName: 'short' });
   const score = pick.confidenceScore || 0;
 
   return (
