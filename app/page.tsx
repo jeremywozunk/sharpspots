@@ -180,11 +180,11 @@ export default async function Home() {
 
       <div className="hero">
         <h1>
-          AI built on <em>time-tested frameworks.</em>
+          Time-tested sports analysis frameworks,
           <br />
-          A new edge, every morning.
+          using <em>modern artificial intelligence.</em>
         </h1>
-        <p>Decades of sharp-betting principles, now run by AI across every major league at sunrise. Three independent pillars, fully explained.</p>
+        <p>Every game on today&apos;s slate is analyzed and listed below in chronological order.</p>
       </div>
 
       <section className="confidence-scale" aria-label="How to read confidence ratings">

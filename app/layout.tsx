@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Logo from './Logo';
 import SportsDropdown from './SportsDropdown';
 import './globals.css';
 
@@ -14,7 +15,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <style>{`
           .topbar { height: 3px; background: linear-gradient(to right, var(--jade) 50%, var(--cream) 50%); }
           .nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; background: var(--bg-2); border-bottom: 1px solid var(--border-subtle); }
-          .logo { display: flex; gap: 0; line-height: 1; font-family: var(--font-brand); font-weight: 400; font-size: 32px; text-transform: uppercase; letter-spacing: 0.14em; }
+          .logo { display: flex; align-items: center; gap: 14px; line-height: 1; font-family: var(--font-brand); font-weight: 400; font-size: 38px; text-transform: uppercase; letter-spacing: 0.14em; }
+          .logo-wordmark { display: flex; gap: 0; line-height: 1; }
           .logo .sharp { color: var(--jade); }
           .logo .spots { color: var(--cream); }
           .nav-links { display: flex; gap: 32px; align-items: center; }
@@ -29,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           .footer-disc { font-family: var(--font-ui); font-size: 10px; color: var(--gray-muted); }
           @media (max-width: 768px) {
             .nav { padding: 14px 20px; }
-            .logo { font-size: 24px; }
+            .logo { font-size: 28px; gap: 10px; }
             .nav-links { gap: 18px; }
             .nav-links a { font-size: 11px; }
             .sports-btn { font-size: 11px; }
@@ -38,8 +40,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="topbar" />
         <nav className="nav">
           <Link href="/" className="logo">
-            <span className="sharp">SHARP</span>
-            <span className="spots">SPOTS</span>
+            <Logo size={48} />
+            <span className="logo-wordmark">
+              <span className="sharp">SHARP</span>
+              <span className="spots">SPOTS</span>
+            </span>
           </Link>
           <div className="nav-links">
             <SportsDropdown />
