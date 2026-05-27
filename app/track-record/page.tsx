@@ -147,7 +147,13 @@ function winPct(b: Bucket): number {
 
 function fmtDate(iso: string): string {
   if (!iso) return '';
-  return new Date(iso).toLocaleDateString('en-US', {
+  // gameDate from Contentful is a DATE-type field (YYYY-MM-DD). JavaScript's
+  // Date() parses that as UTC midnight, which displays as the *previous* day
+  // in ET. Anchor to noon ET so it stays on the correct calendar day. Same
+  // pattern as app/[league]/picks/[date]/[gameSlug]/page.tsx (May 26, 2026).
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(iso);
+  const d = dateOnly ? new Date(`${iso}T12:00:00-04:00`) : new Date(iso);
+  return d.toLocaleDateString('en-US', {
     month: 'short', day: 'numeric', timeZone: 'America/New_York',
   });
 }
