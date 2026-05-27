@@ -249,24 +249,25 @@ export default async function TrackRecordPage({ searchParams }: PageProps) {
 
         .tr-table-wrap { padding: 0 48px 32px; }
         .tr-table { width: 100%; border-collapse: collapse; font-family: var(--font-ui); border: 1px solid var(--border-subtle); }
-        .tr-table th { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; color: var(--gray-muted); text-transform: uppercase; text-align: left; padding: 12px 14px; background: var(--bg-2); border-bottom: 1px solid var(--border-subtle); }
-        .tr-table td { padding: 14px; border-bottom: 1px solid var(--border-subtle); font-size: 13px; color: var(--fg); vertical-align: middle; }
+        .tr-table th { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: var(--gray-muted); text-transform: uppercase; text-align: left; padding: 14px; background: var(--bg-2); border-bottom: 1px solid var(--border-subtle); }
+        .tr-table td { padding: 16px 14px; border-bottom: 1px solid var(--border-subtle); font-size: 15px; color: var(--fg); vertical-align: middle; }
         .tr-table tr:last-child td { border-bottom: none; }
         .tr-table tr:hover td { background: rgba(74, 222, 128, 0.04); }
         .tr-table .col-date { color: var(--gray-muted); white-space: nowrap; width: 80px; }
-        .tr-table .col-sport { color: var(--gray-muted); width: 60px; font-size: 12px; text-transform: uppercase; }
+        .tr-table .col-sport { color: var(--gray-muted); width: 70px; font-size: 13px; text-transform: uppercase; }
         .tr-table .col-game a { color: var(--fg); text-decoration: none; }
         .tr-table .col-game a:hover { color: var(--jade); }
         .tr-table .col-pick { color: var(--jade); font-weight: 500; white-space: nowrap; }
-        .tr-table .col-line { color: var(--gray-muted); font-size: 12px; white-space: nowrap; width: 110px; }
-        .tr-table .col-stars { color: var(--gold); font-size: 11px; letter-spacing: 1px; width: 70px; white-space: nowrap; }
+        .tr-table .col-pick.loss { color: var(--fg); }
+        .tr-table .col-line { color: var(--gray-muted); font-size: 13px; white-space: nowrap; width: 120px; }
+        .tr-table .col-stars { color: var(--gold); font-size: 13px; letter-spacing: 1px; width: 80px; white-space: nowrap; }
         .tr-table .col-result { width: 70px; }
         .tr-table .col-units { font-weight: 600; white-space: nowrap; width: 70px; text-align: right; }
         .tr-table .units-pos { color: var(--jade); }
         .tr-table .units-neg { color: #d97766; }
         .tr-table .units-flat { color: var(--gray-muted); }
 
-        .result-pill { display: inline-block; padding: 2px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; }
+        .result-pill { display: inline-block; padding: 3px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; }
         .result-pill.W { background: rgba(74, 222, 128, 0.14); color: var(--jade); }
         .result-pill.L { background: rgba(217, 119, 102, 0.14); color: #d97766; }
         .result-pill.Push { background: rgba(180, 180, 180, 0.14); color: var(--cream); }
@@ -288,7 +289,7 @@ export default async function TrackRecordPage({ searchParams }: PageProps) {
           .tr-filters { padding: 10px 20px 12px; }
           .range-select { margin-left: 0; }
           .tr-table-wrap { padding: 0 20px 24px; }
-          .tr-table th, .tr-table td { padding: 10px 8px; font-size: 12px; }
+          .tr-table th, .tr-table td { padding: 12px 8px; font-size: 13px; }
           .tr-table .col-line, .tr-table .col-stars { display: none; }
           .disclaimer { padding: 18px 20px 36px; }
         }
@@ -406,7 +407,7 @@ export default async function TrackRecordPage({ searchParams }: PageProps) {
                     <td className="col-game">
                       {gameUrl !== '#' ? <Link href={gameUrl}>{p.fields.title}</Link> : (p.fields.title || '')}
                     </td>
-                    <td className="col-pick">{p.fields.playToLine || p.fields.recommendedPlay || '—'}</td>
+                    <td className={`col-pick${r === 'L' ? ' loss' : ''}`}>{p.fields.playToLine || p.fields.recommendedPlay || '—'}</td>
                     <td className="col-line">{formatLineSummary(p)}</td>
                     <td className="col-stars">{'★'.repeat(stars)}</td>
                     <td className="col-result"><span className={`result-pill ${r}`}>{r}</span></td>
