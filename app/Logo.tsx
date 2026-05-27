@@ -21,8 +21,8 @@ export default function Logo({ size = 48, className }: LogoProps) {
       <circle cx="22" cy="22" r="18" fill="var(--bg)" stroke="var(--jade)" strokeWidth="1.5" />
       <circle cx="22" cy="22" r="14" fill="none" stroke="var(--jade)" strokeWidth="0.5" />
       <text
-        x="22"
-        y="32"
+        x="24"
+        y="30"
         textAnchor="middle"
         fill="var(--jade)"
         fontFamily="Georgia, 'Times New Roman', serif"
