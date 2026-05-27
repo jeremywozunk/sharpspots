@@ -107,39 +107,47 @@ export default async function GamePage({ params }: PageProps) {
         <header className="pick-header">
           <div className="pick-meta">{pick.league} - {dateDisplay} - {timeDisplay}</div>
           <h1 className="pick-h1">{pick.title}</h1>
-          <div className="pick-badges">
-            <span className="pick-ev-pill">{pick.evPercentage} EV</span>
-            <span className="pick-stars">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <span key={i} className={i < score ? '' : 'pick-stars-empty'}>★</span>
-              ))}
-            </span>
-            <span className="pick-play-tag">{pick.playToLine}</span>
-          </div>
+          {pick.pageType === 'pick' ? (
+            <div className="pick-badges">
+              <span className="pick-ev-pill">{pick.evPercentage} EV</span>
+              <span className="pick-stars">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <span key={i} className={i < score ? '' : 'pick-stars-empty'}>★</span>
+                ))}
+              </span>
+              <span className="pick-play-tag">{pick.playToLine}</span>
+            </div>
+          ) : (
+            <div className="pick-badges">
+              <span className="pick-play-tag" style={{ borderColor: 'var(--gray-muted)', color: 'var(--gray-muted)' }}>No Edge — Market Priced Fairly</span>
+            </div>
+          )}
         </header>
 
-        <section className="pick-card">
-          <div className="pick-card-label">The Pick</div>
-          <div className="pick-play-stripe">{pick.playToLine}</div>
-          <div className="metric-grid">
-            <div>
-              <div className="metric-label">Expected Value</div>
-              <div className="metric-value">{pick.evPercentage}</div>
+        {pick.pageType === 'pick' && (
+          <section className="pick-card">
+            <div className="pick-card-label">The Pick</div>
+            <div className="pick-play-stripe">{pick.playToLine}</div>
+            <div className="metric-grid">
+              <div>
+                <div className="metric-label">Expected Value</div>
+                <div className="metric-value">{pick.evPercentage}</div>
+              </div>
+              <div>
+                <div className="metric-label">Fair Odds</div>
+                <div className="metric-value">{pick.fairOdds}</div>
+              </div>
+              <div>
+                <div className="metric-label">Market Odds</div>
+                <div className="metric-value">{pick.marketOdds}</div>
+              </div>
+              <div>
+                <div className="metric-label">Sportsbook</div>
+                <div className="metric-value">{pick.sportsbook}</div>
+              </div>
             </div>
-            <div>
-              <div className="metric-label">Fair Odds</div>
-              <div className="metric-value">{pick.fairOdds}</div>
-            </div>
-            <div>
-              <div className="metric-label">Market Odds</div>
-              <div className="metric-value">{pick.marketOdds}</div>
-            </div>
-            <div>
-              <div className="metric-label">Sportsbook</div>
-              <div className="metric-value">{pick.sportsbook}</div>
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         <article className="pick-prose">
           {pick.analysisParagraph1 && documentToReactComponents(pick.analysisParagraph1)}
