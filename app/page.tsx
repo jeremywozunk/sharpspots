@@ -110,10 +110,11 @@ export default async function Home() {
   return (
     <>
       <style>{`
-        .hero { padding: 80px 48px 64px; border-bottom: 1px solid var(--border-subtle); text-align: center; }
-        .hero h1 { font-family: var(--font-display); font-style: italic; font-size: 44px; line-height: 1.18; margin-bottom: 18px; color: var(--fg); }
-        .hero h1 em { font-style: italic; color: var(--jade); }
-        .hero p { font-size: 14px; color: var(--gray-muted); line-height: 1.65; max-width: 580px; margin: 0 auto; }
+        .hero { padding: 72px 48px 48px; border-bottom: 1px solid var(--border-subtle); text-align: center; }
+        .hero h1 { font-family: var(--font-brand); font-size: 54px; line-height: 0.95; margin: 0; color: var(--fg); font-weight: 400; letter-spacing: 0.04em; text-transform: uppercase; }
+        .hero h1 em { font-style: normal; color: var(--jade); }
+        .hero-dek { font-family: var(--font-brand); font-size: 18px; color: var(--fg); letter-spacing: 0.32em; margin-top: 16px; text-transform: uppercase; font-weight: 400; }
+        .hero p { font-size: 14px; color: var(--gray-muted); line-height: 1.65; max-width: 580px; margin: 14px auto 0; }
         .section-header { display: flex; flex-direction: column; align-items: center; padding: 40px 48px 24px; gap: 10px; }
         .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; color: var(--gray-muted); text-transform: uppercase; }
         .card-list { padding: 0 48px; }
@@ -179,8 +180,9 @@ export default async function Home() {
         .scale-bridge p { font-family: var(--font-display); font-style: italic; font-size: 14px; color: var(--fg); max-width: 760px; margin: 0 auto; line-height: 1.6; }
         .scale-bridge strong { color: var(--jade); font-style: normal; font-weight: 600; }
         @media (max-width: 768px) {
-          .hero { padding: 52px 20px 40px; }
-          .hero h1 { font-size: 30px; }
+          .hero { padding: 48px 20px 36px; }
+          .hero h1 { font-size: 38px; }
+          .hero-dek { font-size: 13px; letter-spacing: 0.24em; margin-top: 12px; }
           .section-header { padding: 28px 20px 16px; }
           .card-list { padding: 0 20px; }
           .card { padding: 22px 0 22px 18px; flex-direction: column; gap: 14px; }
@@ -206,10 +208,11 @@ export default async function Home() {
 
       <div className="hero">
         <h1>
-          Sports betting analysis,
+          Sports betting
           <br />
-          driven by <em>artificial intelligence.</em>
+          <em>analysis</em>
         </h1>
+        <div className="hero-dek">Driven by artificial intelligence</div>
         <p>Every game on today&apos;s slate is analyzed and listed below in chronological order.</p>
       </div>
 
