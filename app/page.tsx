@@ -227,19 +227,19 @@ export default async function Home() {
         </div>
         <div className="cs-labels">
           <div className="cs-cell">
-            <div className="cs-stars">★<span className="empty">★★★★</span></div>
+            <div className="cs-stars">★</div>
             <div className="cs-tier">Lowest<br/>Confidence</div>
           </div>
           <div className="cs-cell">
-            <div className="cs-stars">★★<span className="empty">★★★</span></div>
+            <div className="cs-stars">★★</div>
             <div className="cs-tier">Low</div>
           </div>
           <div className="cs-cell">
-            <div className="cs-stars">★★★<span className="empty">★★</span></div>
+            <div className="cs-stars">★★★</div>
             <div className="cs-tier">Moderate</div>
           </div>
           <div className="cs-cell">
-            <div className="cs-stars">★★★★<span className="empty">★</span></div>
+            <div className="cs-stars">★★★★</div>
             <div className="cs-tier">High</div>
           </div>
           <div className="cs-cell high">
