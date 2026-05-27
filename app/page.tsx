@@ -142,6 +142,23 @@ export default async function Home() {
         .step { background: var(--bg); border: 1px solid var(--border-subtle); border-top: 2px solid var(--jade); padding: 32px 28px; }
         .step-num { font-family: var(--font-brand); font-size: 22px; color: var(--jade); margin-bottom: 14px; letter-spacing: 0.12em; }
         .step-text { font-family: var(--font-prose); font-size: 14px; color: var(--fg); line-height: 1.65; }
+        .confidence-scale { padding: 36px 48px 32px; border-bottom: 1px solid var(--border-subtle); background: var(--bg); }
+        .cs-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; max-width: 1100px; margin-left: auto; margin-right: auto; }
+        .cs-eyebrow { font-size: 10px; color: var(--gray-muted); letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; }
+        .cs-hint { font-family: var(--font-display); font-style: italic; font-size: 12px; color: var(--gray-muted); }
+        .cs-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin: 0 auto 16px; max-width: 1100px; }
+        .cs-bar-seg { height: 4px; }
+        .cs-bar-seg.s1 { background: rgba(74, 222, 128, 0.22); }
+        .cs-bar-seg.s2 { background: rgba(74, 222, 128, 0.42); }
+        .cs-bar-seg.s3 { background: rgba(74, 222, 128, 0.62); }
+        .cs-bar-seg.s4 { background: rgba(74, 222, 128, 0.82); }
+        .cs-bar-seg.s5 { background: var(--jade); }
+        .cs-labels { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; max-width: 1100px; margin: 0 auto; }
+        .cs-cell { text-align: left; }
+        .cs-stars { font-size: 13px; letter-spacing: 3px; margin-bottom: 6px; color: var(--jade); }
+        .cs-stars .empty { color: var(--star-empty); }
+        .cs-tier { font-size: 10px; color: var(--gray-muted); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.4; }
+        .cs-cell.high .cs-tier { color: var(--fg); font-weight: 600; }
         @media (max-width: 768px) {
           .hero { padding: 52px 20px 40px; }
           .hero h1 { font-size: 30px; }
@@ -153,6 +170,11 @@ export default async function Home() {
           .card-right { align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 10px; }
           .hiw { padding: 56px 20px; }
           .steps { grid-template-columns: 1fr; gap: 18px; }
+          .confidence-scale { padding: 28px 20px 24px; }
+          .cs-header { margin-bottom: 14px; }
+          .cs-hint { display: none; }
+          .cs-tier { font-size: 9px; letter-spacing: 0.04em; }
+          .cs-stars { font-size: 11px; letter-spacing: 2px; }
         }
       `}</style>
 
@@ -164,6 +186,42 @@ export default async function Home() {
         </h1>
         <p>Decades of sharp-betting principles, now run by AI across every major league at sunrise. Three independent pillars, fully explained.</p>
       </div>
+
+      <section className="confidence-scale" aria-label="How to read confidence ratings">
+        <div className="cs-header">
+          <div className="cs-eyebrow">Confidence Scale</div>
+          <div className="cs-hint">More stars = more signals agreeing</div>
+        </div>
+        <div className="cs-bar" aria-hidden="true">
+          <div className="cs-bar-seg s1"></div>
+          <div className="cs-bar-seg s2"></div>
+          <div className="cs-bar-seg s3"></div>
+          <div className="cs-bar-seg s4"></div>
+          <div className="cs-bar-seg s5"></div>
+        </div>
+        <div className="cs-labels">
+          <div className="cs-cell">
+            <div className="cs-stars">★<span className="empty">★★★★</span></div>
+            <div className="cs-tier">Lowest<br/>Confidence</div>
+          </div>
+          <div className="cs-cell">
+            <div className="cs-stars">★★<span className="empty">★★★</span></div>
+            <div className="cs-tier">Low</div>
+          </div>
+          <div className="cs-cell">
+            <div className="cs-stars">★★★<span className="empty">★★</span></div>
+            <div className="cs-tier">Moderate</div>
+          </div>
+          <div className="cs-cell">
+            <div className="cs-stars">★★★★<span className="empty">★</span></div>
+            <div className="cs-tier">High</div>
+          </div>
+          <div className="cs-cell high">
+            <div className="cs-stars">★★★★★</div>
+            <div className="cs-tier">Highest<br/>Confidence</div>
+          </div>
+        </div>
+      </section>
 
       <div className="section-header">
         <div className="section-label">Today&apos;s Games</div>
