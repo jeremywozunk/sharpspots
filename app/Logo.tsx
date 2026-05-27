@@ -22,18 +22,18 @@ export default function Logo({ size = 48, className }: LogoProps) {
       <circle cx="22" cy="22" r="14" fill="none" stroke="var(--jade)" strokeWidth="0.5" />
       <text
         x="22"
-        y="30"
+        y="32"
         textAnchor="middle"
         fill="var(--jade)"
         fontFamily="Georgia, 'Times New Roman', serif"
         fontStyle="italic"
         fontWeight="700"
-        fontSize="22"
+        fontSize="28"
       >
         S
       </text>
-      <line x1="19" y1="6" x2="19" y2="38" stroke="var(--jade)" strokeWidth="1.2" />
-      <line x1="25" y1="6" x2="25" y2="38" stroke="var(--jade)" strokeWidth="1.2" />
+      <line x1="20.5" y1="6" x2="20.5" y2="38" stroke="var(--jade)" strokeWidth="1.2" />
+      <line x1="23.5" y1="6" x2="23.5" y2="38" stroke="var(--jade)" strokeWidth="1.2" />
     </svg>
   );
 }

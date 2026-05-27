@@ -144,8 +144,8 @@ export default async function Home() {
         .step-text { font-family: var(--font-prose); font-size: 14px; color: var(--fg); line-height: 1.65; }
         .confidence-scale { padding: 36px 48px 32px; border-bottom: 1px solid var(--border-subtle); background: var(--bg); }
         .cs-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; max-width: 1100px; margin-left: auto; margin-right: auto; }
-        .cs-eyebrow { font-size: 10px; color: var(--gray-muted); letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; }
-        .cs-hint { font-family: var(--font-display); font-style: italic; font-size: 12px; color: var(--gray-muted); }
+        .cs-eyebrow { font-size: 10px; color: var(--fg); letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; }
+        .cs-hint { font-family: var(--font-display); font-style: italic; font-size: 12px; color: var(--fg); }
         .cs-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin: 0 auto 16px; max-width: 1100px; }
         .cs-bar-seg { height: 4px; }
         .cs-bar-seg.s1 { background: rgba(74, 222, 128, 0.22); }
@@ -157,7 +157,7 @@ export default async function Home() {
         .cs-cell { text-align: left; }
         .cs-stars { font-size: 13px; letter-spacing: 3px; margin-bottom: 6px; color: var(--jade); }
         .cs-stars .empty { color: var(--star-empty); }
-        .cs-tier { font-size: 10px; color: var(--gray-muted); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.4; }
+        .cs-tier { font-size: 10px; color: var(--fg); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.4; }
         .cs-cell.high .cs-tier { color: var(--fg); font-weight: 600; }
         @media (max-width: 768px) {
           .hero { padding: 52px 20px 40px; }
@@ -180,9 +180,9 @@ export default async function Home() {
 
       <div className="hero">
         <h1>
-          Time-tested sports analysis frameworks,
+          Sports betting analysis,
           <br />
-          using <em>modern artificial intelligence.</em>
+          driven by <em>artificial intelligence.</em>
         </h1>
         <p>Every game on today&apos;s slate is analyzed and listed below in chronological order.</p>
       </div>
