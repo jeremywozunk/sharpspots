@@ -19,10 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           .logo-wordmark { display: flex; gap: 0; line-height: 1; }
           .logo .sharp { color: var(--jade); }
           .logo .spots { color: var(--cream); }
-          .nav-links { display: flex; gap: 32px; align-items: center; }
-          .nav-links a { font-family: var(--font-ui); font-size: 13px; color: var(--fg); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+          .nav-links { display: flex; gap: 36px; align-items: center; }
+          .nav-links a { font-family: var(--font-ui); font-size: 15px; color: var(--fg); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
           .nav-links a:hover { color: var(--jade); }
-          .sports-btn { font-family: var(--font-ui); font-size: 13px; color: var(--fg); background: none; border: none; cursor: pointer; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+          .sports-btn { font-family: var(--font-ui); font-size: 15px; color: var(--fg); background: none; border: none; cursor: pointer; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
           .sports-btn:hover { color: var(--jade); }
           .footer { padding: 24px 48px; background: var(--bg-2); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 80px; }
           .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
@@ -33,8 +33,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             .nav { padding: 14px 20px; }
             .logo { font-size: 28px; gap: 10px; }
             .nav-links { gap: 18px; }
-            .nav-links a { font-size: 11px; }
-            .sports-btn { font-size: 11px; }
+            .nav-links a { font-size: 13px; }
+            .sports-btn { font-size: 13px; }
           }
         `}</style>
         <div className="topbar" />
@@ -47,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </span>
           </Link>
           <div className="nav-links">
+            <Link href="/">Home</Link>
             <SportsDropdown />
             <Link href="/how-it-works">How It Works</Link>
             <Link href="/track-record">Track Record</Link>

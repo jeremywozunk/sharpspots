@@ -159,6 +159,25 @@ export default async function Home() {
         .cs-stars .empty { color: var(--star-empty); }
         .cs-tier { font-size: 10px; color: var(--fg); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.4; }
         .cs-cell.high .cs-tier { color: var(--fg); font-weight: 600; }
+        .ev-scale { padding: 36px 48px 32px; border-bottom: 1px solid var(--border-subtle); background: var(--bg); }
+        .ev-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; max-width: 1100px; margin-left: auto; margin-right: auto; }
+        .ev-eyebrow { font-size: 10px; color: var(--fg); letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; }
+        .ev-hint { font-family: var(--font-display); font-style: italic; font-size: 12px; color: var(--fg); }
+        .ev-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin: 0 auto 16px; max-width: 1100px; }
+        .ev-bar-seg { height: 4px; }
+        .ev-bar-seg.e1 { background: rgba(200, 169, 106, 0.22); }
+        .ev-bar-seg.e2 { background: rgba(200, 169, 106, 0.42); }
+        .ev-bar-seg.e3 { background: rgba(200, 169, 106, 0.62); }
+        .ev-bar-seg.e4 { background: rgba(200, 169, 106, 0.82); }
+        .ev-bar-seg.e5 { background: var(--gold); }
+        .ev-labels { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; max-width: 1100px; margin: 0 auto; }
+        .ev-cell { text-align: left; }
+        .ev-range { font-size: 13px; letter-spacing: 0.02em; margin-bottom: 6px; color: var(--gold); font-weight: 600; }
+        .ev-tier { font-size: 10px; color: var(--fg); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.4; }
+        .ev-cell.high .ev-tier { font-weight: 600; }
+        .scale-bridge { padding: 22px 48px; text-align: center; background: var(--bg-2); border-bottom: 1px solid var(--border-subtle); }
+        .scale-bridge p { font-family: var(--font-display); font-style: italic; font-size: 14px; color: var(--fg); max-width: 760px; margin: 0 auto; line-height: 1.6; }
+        .scale-bridge strong { color: var(--jade); font-style: normal; font-weight: 600; }
         @media (max-width: 768px) {
           .hero { padding: 52px 20px 40px; }
           .hero h1 { font-size: 30px; }
@@ -175,6 +194,13 @@ export default async function Home() {
           .cs-hint { display: none; }
           .cs-tier { font-size: 9px; letter-spacing: 0.04em; }
           .cs-stars { font-size: 11px; letter-spacing: 2px; }
+          .ev-scale { padding: 28px 20px 24px; }
+          .ev-header { margin-bottom: 14px; }
+          .ev-hint { display: none; }
+          .ev-tier { font-size: 9px; letter-spacing: 0.04em; }
+          .ev-range { font-size: 11px; }
+          .scale-bridge { padding: 18px 20px; }
+          .scale-bridge p { font-size: 12px; }
         }
       `}</style>
 
@@ -222,6 +248,49 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      <section className="ev-scale" aria-label="How to read EV percentages">
+        <div className="ev-header">
+          <div className="ev-eyebrow">Edge Scale (EV)</div>
+          <div className="ev-hint">Higher EV = larger sportsbook mispricing</div>
+        </div>
+        <div className="ev-bar" aria-hidden="true">
+          <div className="ev-bar-seg e1"></div>
+          <div className="ev-bar-seg e2"></div>
+          <div className="ev-bar-seg e3"></div>
+          <div className="ev-bar-seg e4"></div>
+          <div className="ev-bar-seg e5"></div>
+        </div>
+        <div className="ev-labels">
+          <div className="ev-cell">
+            <div className="ev-range">+3% – 10%</div>
+            <div className="ev-tier">Modest<br/>Edge</div>
+          </div>
+          <div className="ev-cell">
+            <div className="ev-range">10% – 20%</div>
+            <div className="ev-tier">Real</div>
+          </div>
+          <div className="ev-cell">
+            <div className="ev-range">20% – 35%</div>
+            <div className="ev-tier">Strong</div>
+          </div>
+          <div className="ev-cell">
+            <div className="ev-range">35% – 50%</div>
+            <div className="ev-tier">Very Strong</div>
+          </div>
+          <div className="ev-cell high">
+            <div className="ev-range">50%+</div>
+            <div className="ev-tier">Outlier<br/>Edge</div>
+          </div>
+        </div>
+      </section>
+
+      <div className="scale-bridge">
+        <p>
+          <strong>EV is the size of the edge. Stars are the strength of the signal</strong>
+          {' '}— both surfaced by AI-driven Python models that re-evaluate the market every morning.
+        </p>
+      </div>
 
       <div className="section-header">
         <div className="section-label">Today&apos;s Games</div>
@@ -292,3 +361,4 @@ export default async function Home() {
     </>
   );
 }
+                  
