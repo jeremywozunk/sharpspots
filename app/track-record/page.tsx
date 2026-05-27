@@ -255,8 +255,9 @@ export default async function TrackRecordPage({ searchParams }: PageProps) {
         .tr-table tr:hover td { background: rgba(74, 222, 128, 0.04); }
         .tr-table .col-date { color: var(--gray-muted); white-space: nowrap; width: 80px; }
         .tr-table .col-sport { color: var(--gray-muted); width: 60px; font-size: 12px; text-transform: uppercase; }
-        .tr-table .col-pick a { color: var(--fg); text-decoration: none; }
-        .tr-table .col-pick a:hover { color: var(--jade); }
+        .tr-table .col-game a { color: var(--fg); text-decoration: none; }
+        .tr-table .col-game a:hover { color: var(--jade); }
+        .tr-table .col-pick { color: var(--jade); font-weight: 500; white-space: nowrap; }
         .tr-table .col-line { color: var(--gray-muted); font-size: 12px; white-space: nowrap; width: 110px; }
         .tr-table .col-stars { color: var(--gold); font-size: 11px; letter-spacing: 1px; width: 70px; white-space: nowrap; }
         .tr-table .col-result { width: 70px; }
@@ -375,6 +376,7 @@ export default async function TrackRecordPage({ searchParams }: PageProps) {
               <tr>
                 <th>Date</th>
                 <th>Sport</th>
+                <th>Game</th>
                 <th>Pick</th>
                 <th>Line · Odds</th>
                 <th>★</th>
@@ -401,9 +403,10 @@ export default async function TrackRecordPage({ searchParams }: PageProps) {
                   <tr key={p.sys.id}>
                     <td className="col-date">{fmtDate(p.fields.gameDate || p.sys.createdAt)}</td>
                     <td className="col-sport">{p.fields.league || ''}</td>
-                    <td className="col-pick">
+                    <td className="col-game">
                       {gameUrl !== '#' ? <Link href={gameUrl}>{p.fields.title}</Link> : (p.fields.title || '')}
                     </td>
+                    <td className="col-pick">{p.fields.playToLine || p.fields.recommendedPlay || '—'}</td>
                     <td className="col-line">{formatLineSummary(p)}</td>
                     <td className="col-stars">{'★'.repeat(stars)}</td>
                     <td className="col-result"><span className={`result-pill ${r}`}>{r}</span></td>
