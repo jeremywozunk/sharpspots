@@ -16,6 +16,7 @@ const ACTIVE_LEAGUES = [
   'champions-league',
   'college-basketball',
   'college-football',
+  'wc',
 ];
 
 interface GamePickEntry {

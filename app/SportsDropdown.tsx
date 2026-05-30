@@ -14,6 +14,7 @@ const LEAGUES = [
   { slug: 'college-basketball', name: 'College Basketball' },
   { slug: 'college-football', name: 'College Football' },
   { slug: 'ufc', name: 'UFC' },
+  { slug: 'wc', name: 'World Cup' },
 ];
 
 export default function SportsDropdown() {

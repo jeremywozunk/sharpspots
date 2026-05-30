@@ -20,6 +20,7 @@ const ALLOWED_LEAGUES: Record<string, string> = {
   'champions-league': 'Champions League',
   'college-basketball': 'College Basketball',
   'college-football': 'College Football',
+  'wc': 'World Cup',
 };
 
 export const dynamic = 'force-dynamic';
