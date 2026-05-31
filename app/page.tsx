@@ -1,6 +1,11 @@
 import client from './contentful';
 import Link from 'next/link';
 
+// Revalidate every 30 min so the static homepage re-runs getTodaysGames()
+// with the current ET date even if the 12:01 AM Vercel rebuild cron misses.
+// Belt-and-suspenders against stale day-boundary content (May 31, 2026).
+export const revalidate = 1800;
+
 interface GamePick {
   sys: { id: string };
   fields: {
@@ -301,7 +306,7 @@ export default async function Home() {
 
       <div className="card-list">
         {picks.length === 0 && (
-          <div className="empty">No games on the slate today. Check back tomorrow morning.</div>
+          <div className="empty">Today&apos;s edges drop each morning — check back soon.</div>
         )}
         {picks.map((pick, idx) => {
           const isNoPick = pick.fields.pageType === 'no-pick';
