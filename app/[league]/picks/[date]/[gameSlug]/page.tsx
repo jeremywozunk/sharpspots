@@ -90,6 +90,8 @@ export default async function GamePage({ params }: PageProps) {
           .pick-card { padding: 22px 20px; }
           .metric-value { font-size: 19px; }
           .pick-prose { font-size: 14px; }
+          /* Fix #4: reliable 2-col metric grid (auto-fit minmax collapsed to 1). */
+          .metric-grid { grid-template-columns: repeat(2, 1fr); gap: 14px 18px; }
         }
       `}</style>
 

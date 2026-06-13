@@ -175,7 +175,9 @@ export default async function LeaguePage({ params }: PageProps) {
           .card { padding: 22px 0 22px 18px; flex-direction: column; gap: 14px; }
           .card-teaser { display: none; }
           .card-title { font-size: 19px; }
-          .card-right { align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 10px; }
+          /* Fix #5: tidy single badge row, view-link pushed right. */
+          .card-right { align-items: center; flex-direction: row; flex-wrap: wrap; gap: 10px 12px; width: 100%; }
+          .card-right .view-link { margin-left: auto; }
           .empty-state { padding: 80px 20px; font-size: 17px; }
         }
       `}</style>

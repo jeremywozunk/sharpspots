@@ -193,19 +193,27 @@ export default async function Home() {
           .card { padding: 22px 0 22px 18px; flex-direction: column; gap: 14px; }
           .card-title { font-size: 19px; }
           .card-teaser { display: none; }
-          .card-right { align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 10px; }
+          /* Fix #5: tidy single badge row, view-link pushed right. */
+          .card-right { align-items: center; flex-direction: row; flex-wrap: wrap; gap: 10px 12px; width: 100%; }
+          .card-right .view-link { margin-left: auto; }
+          /* Fix #2: hover-only tooltips are invisible/clipped on phones — hide them. */
+          .metric-tip { display: none !important; }
+          .ev-badge, .star-rating { cursor: default; }
           .hiw { padding: 56px 20px; }
           .steps { grid-template-columns: 1fr; gap: 18px; }
           .confidence-scale { padding: 28px 20px 24px; }
           .cs-header { margin-bottom: 14px; }
           .cs-hint { display: none; }
-          .cs-tier { font-size: 9px; letter-spacing: 0.04em; }
-          .cs-stars { font-size: 11px; letter-spacing: 2px; }
+          /* Fix #3: 3-col labels (readable ~11px) instead of 5-col 9px cram. */
+          .cs-labels { grid-template-columns: repeat(3, 1fr); gap: 10px 8px; }
+          .cs-tier { font-size: 11px; letter-spacing: 0.04em; }
+          .cs-stars { font-size: 12px; letter-spacing: 2px; }
           .ev-scale { padding: 28px 20px 24px; }
           .ev-header { margin-bottom: 14px; }
           .ev-hint { display: none; }
-          .ev-tier { font-size: 9px; letter-spacing: 0.04em; }
-          .ev-range { font-size: 11px; }
+          .ev-labels { grid-template-columns: repeat(3, 1fr); gap: 10px 8px; }
+          .ev-tier { font-size: 11px; letter-spacing: 0.04em; }
+          .ev-range { font-size: 12px; }
           .scale-bridge { padding: 18px 20px; }
           .scale-bridge p { font-size: 12px; }
         }

@@ -1,6 +1,5 @@
 import Link from 'next/link';
-import Logo from './Logo';
-import SportsDropdown from './SportsDropdown';
+import SiteNav from './SiteNav';
 import './globals.css';
 
 export const metadata = {
@@ -38,22 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }
         `}</style>
         <div className="topbar" />
-        <nav className="nav">
-          <Link href="/" className="logo">
-            <Logo size={48} />
-            <span className="logo-wordmark">
-              <span className="sharp">SHARP</span>
-              <span className="spots">SPOTS</span>
-            </span>
-          </Link>
-          <div className="nav-links">
-            <Link href="/">Home</Link>
-            <SportsDropdown />
-            <Link href="/how-it-works">How It Works</Link>
-            <Link href="/track-record">Track Record</Link>
-            <Link href="/blog">Blog</Link>
-          </div>
-        </nav>
+        <SiteNav />
         {children}
         <footer className="footer">
           <div className="footer-links">
