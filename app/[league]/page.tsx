@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: PageProps) {
 
 function StarRating({ score }: { score: number }) {
   return (
-    <div style={{ color: 'var(--gold)', fontSize: 14, letterSpacing: 3 }}>
+    <div style={{ color: 'var(--gold)', fontSize: 18, letterSpacing: 3 }}>
       {[1,2,3,4,5].map(i => (
         <span key={i} style={{ color: i <= score ? 'var(--gold)' : 'var(--star-empty)' }}>★</span>
       ))}
@@ -153,30 +153,31 @@ export default async function LeaguePage({ params }: PageProps) {
         .league-sub { font-size: 13px; color: var(--gray-muted); letter-spacing: 0.04em; }
         .empty-state { padding: 100px 48px; text-align: center; color: var(--gray-muted); font-family: var(--font-display); font-style: italic; font-size: 20px; line-height: 1.5; }
         .card-list { padding: 0 48px; }
-        .card { padding: 28px 0 28px 28px; border-bottom: 1px solid var(--border-subtle); border-left: 1px solid var(--jade); display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; color: inherit; }
+        .card { padding: 30px 0 30px 28px; border-bottom: 1px solid var(--border-subtle); border-left: 1px solid var(--jade); display: flex; align-items: flex-start; gap: 56px; color: inherit; }
         .card:hover { background: rgba(74, 222, 128, 0.04); }
-        .card-left { flex: 1; min-width: 0; }
+        .card-left { flex: 1; min-width: 0; max-width: 620px; }
         .edge-no { font-size: 10px; font-weight: 600; color: var(--jade); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 10px; }
-        .card-time { font-size: 10px; font-weight: 600; color: var(--gray-muted); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 4px; }
-        .card-title { font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 22px; line-height: 1.22; margin-bottom: 12px; color: var(--fg); }
-        .card-teaser { font-family: var(--font-prose); font-size: 13px; color: var(--gray-muted); line-height: 1.6; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .card-play { display: inline-block; font-size: 10px; font-weight: 600; color: var(--jade); border-top: 2px solid var(--jade); border-bottom: 2px solid var(--jade); padding: 6px 14px; letter-spacing: 0.1em; text-transform: uppercase; }
-        .card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; flex-shrink: 0; }
-        .ev-badge { background: var(--jade); color: var(--bg); font-size: 11px; font-weight: 600; padding: 5px 12px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
+        .card-time { font-size: 12px; font-weight: 600; color: var(--cream); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 5px; }
+        .card-title { font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 27px; line-height: 1.2; margin-bottom: 13px; color: var(--fg); }
+        .card-teaser { font-family: var(--font-prose); font-size: 16px; color: var(--prose-fg); line-height: 1.6; margin-bottom: 18px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .card-play { display: inline-block; font-size: 12px; font-weight: 600; color: var(--jade); border-top: 2px solid var(--jade); border-bottom: 2px solid var(--jade); padding: 7px 15px; letter-spacing: 0.1em; text-transform: uppercase; }
+        .card-right { display: flex; flex-direction: column; align-items: flex-start; gap: 13px; flex-shrink: 0; padding-top: 26px; }
+        .ev-badge { background: var(--jade); color: var(--bg); font-size: 14px; font-weight: 600; padding: 6px 14px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
         .no-edge-badge { background: transparent; color: var(--gray-muted); border: 1px solid var(--gray-muted); font-size: 11px; font-weight: 600; padding: 4px 11px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
         .card.no-pick { border-left-color: var(--gray-muted); opacity: 0.92; }
         .card.no-pick .card-play { color: var(--gray-muted); border-color: var(--gray-muted); }
         .no-pick-label { display: inline-block; font-size: 10px; font-weight: 600; color: var(--gray-muted); border-top: 2px solid var(--gray-muted); border-bottom: 2px solid var(--gray-muted); padding: 6px 14px; letter-spacing: 0.1em; text-transform: uppercase; }
-        .view-link { font-size: 11px; color: var(--cream); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
+        .view-link { font-size: 13px; color: var(--cream); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
         @media (max-width: 768px) {
           .league-header { padding: 40px 20px 24px; }
           .league-h1 { font-size: 44px; }
           .card-list { padding: 0 20px; }
           .card { padding: 22px 0 22px 18px; flex-direction: column; gap: 14px; }
+          .card-left { max-width: none; }
           .card-teaser { display: none; }
-          .card-title { font-size: 19px; }
+          .card-title { font-size: 22px; }
           /* Fix #5: tidy single badge row, view-link pushed right. */
-          .card-right { align-items: center; flex-direction: row; flex-wrap: wrap; gap: 10px 12px; width: 100%; }
+          .card-right { align-items: center; flex-direction: row; flex-wrap: wrap; gap: 10px 12px; width: 100%; padding-top: 0; }
           .card-right .view-link { margin-left: auto; }
           .empty-state { padding: 80px 20px; font-size: 17px; }
         }
