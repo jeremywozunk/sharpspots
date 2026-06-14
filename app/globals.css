@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Newsreader:ital,opsz,wght@0,18..72,400;0,18..72,500;1,18..72,400;1,18..72,500&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
   --bg: #0e1612;
@@ -17,7 +17,8 @@
   --font-brand: 'Bebas Neue', 'Oswald', Arial Black, sans-serif;
   --font-display: 'Playfair Display', Georgia, serif;
   --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-prose: Georgia, 'Times New Roman', serif;
+  --font-prose: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --prose-fg: #ffffff;
 }
 
 @theme inline {

@@ -79,7 +79,7 @@ export default async function GamePage({ params }: PageProps) {
         .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 18px; }
         .metric-label { color: var(--gray-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 6px; }
         .metric-value { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--fg); }
-        .pick-prose { font-family: var(--font-prose); font-size: 16px; line-height: 1.75; color: var(--fg); }
+        .pick-prose { font-family: var(--font-prose); font-size: 16px; line-height: 1.75; color: var(--prose-fg); }
         .pick-prose p { margin: 0 0 22px 0; }
         .pick-footer { border-top: 1px solid var(--border-subtle); padding-top: 28px; margin-top: 48px; font-size: 12px; color: var(--gray-muted); line-height: 1.65; }
         .pick-footer strong { color: var(--fg); }
