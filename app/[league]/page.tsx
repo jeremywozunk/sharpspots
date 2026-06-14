@@ -153,16 +153,21 @@ export default async function LeaguePage({ params }: PageProps) {
         .league-sub { font-size: 13px; color: var(--gray-muted); letter-spacing: 0.04em; }
         .empty-state { padding: 100px 48px; text-align: center; color: var(--gray-muted); font-family: var(--font-display); font-style: italic; font-size: 20px; line-height: 1.5; }
         .card-list { padding: 0 48px; }
-        .card { padding: 30px 0 30px 28px; border-bottom: 1px solid var(--border-subtle); border-left: 1px solid var(--jade); display: flex; align-items: flex-start; gap: 56px; color: inherit; }
+        .card { padding: 30px 28px 30px 28px; border-bottom: 1px solid var(--border-subtle); border-left: 1px solid var(--jade); display: flex; align-items: center; justify-content: space-between; gap: 48px; color: inherit; }
         .card:hover { background: rgba(74, 222, 128, 0.04); }
-        .card-left { flex: 1; min-width: 0; max-width: 620px; }
+        .card-left { flex: 1; min-width: 0; max-width: 680px; }
         .edge-no { font-size: 10px; font-weight: 600; color: var(--jade); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 10px; }
         .card-time { font-size: 12px; font-weight: 600; color: var(--cream); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 5px; }
         .card-title { font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 27px; line-height: 1.2; margin-bottom: 13px; color: var(--fg); }
         .card-teaser { font-family: var(--font-prose); font-size: 16px; color: var(--prose-fg); line-height: 1.6; margin-bottom: 18px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .card-play { display: inline-block; font-size: 12px; font-weight: 600; color: var(--jade); border-top: 2px solid var(--jade); border-bottom: 2px solid var(--jade); padding: 7px 15px; letter-spacing: 0.1em; text-transform: uppercase; }
-        .card-right { display: flex; flex-direction: column; align-items: flex-start; gap: 13px; flex-shrink: 0; padding-top: 26px; }
-        .ev-badge { background: var(--jade); color: var(--bg); font-size: 14px; font-weight: 600; padding: 6px 14px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
+        .card-right { display: flex; flex-direction: row; align-items: center; gap: 32px; flex-shrink: 0; }
+        .conf-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .pick-block { display: flex; flex-direction: column; align-items: center; gap: 11px; min-width: 188px; padding-left: 32px; border-left: 1px solid var(--star-empty); }
+        .pick-label { font-size: 10px; font-weight: 600; color: var(--gray-muted); text-transform: uppercase; letter-spacing: 0.16em; }
+        .pick-headline { font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 25px; line-height: 1.1; color: var(--jade); text-align: center; }
+        .no-edge-headline { font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 20px; line-height: 1.15; color: var(--gray-muted); text-align: center; }
+        .ev-badge { background: var(--jade); color: var(--bg); font-size: 13px; font-weight: 600; padding: 5px 13px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
         .no-edge-badge { background: transparent; color: var(--gray-muted); border: 1px solid var(--gray-muted); font-size: 11px; font-weight: 600; padding: 4px 11px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
         .card.no-pick { border-left-color: var(--gray-muted); opacity: 0.92; }
         .card.no-pick .card-play { color: var(--gray-muted); border-color: var(--gray-muted); }
@@ -172,13 +177,13 @@ export default async function LeaguePage({ params }: PageProps) {
           .league-header { padding: 40px 20px 24px; }
           .league-h1 { font-size: 44px; }
           .card-list { padding: 0 20px; }
-          .card { padding: 22px 0 22px 18px; flex-direction: column; gap: 14px; }
+          .card { padding: 22px 18px 22px 18px; flex-direction: column; align-items: flex-start; gap: 16px; }
           .card-left { max-width: none; }
           .card-teaser { display: none; }
           .card-title { font-size: 22px; }
-          /* Fix #5: tidy single badge row, view-link pushed right. */
-          .card-right { align-items: center; flex-direction: row; flex-wrap: wrap; gap: 10px 12px; width: 100%; padding-top: 0; }
-          .card-right .view-link { margin-left: auto; }
+          .card-right { flex-direction: row; align-items: center; gap: 22px; width: 100%; }
+          .pick-block { align-items: flex-start; padding-left: 22px; min-width: 0; margin-left: auto; text-align: left; }
+          .pick-headline, .no-edge-headline { text-align: left; font-size: 21px; }
           .empty-state { padding: 80px 20px; font-size: 17px; }
         }
       `}</style>
@@ -210,23 +215,29 @@ export default async function LeaguePage({ params }: PageProps) {
                 {fields.analysisParagraph1 && (
                   <div className="card-teaser">{getTeaserFromRichText(fields.analysisParagraph1)}</div>
                 )}
-                {isNoPick ? (
-                  <span className="no-pick-label">Market priced fairly</span>
-                ) : (
-                  <span className="card-play">{fields.playToLine}</span>
-                )}
               </div>
-              <div className="card-right">
-                {isNoPick ? (
-                  <span className="no-edge-badge">No Edge</span>
-                ) : (
-                  <>
-                    <span className="ev-badge">{fields.evPercentage} EV</span>
+              {isNoPick ? (
+                <div className="card-right">
+                  <div className="pick-block">
+                    <div className="pick-label">No Edge</div>
+                    <div className="no-edge-headline">Market priced fairly</div>
+                    <span className="view-link">View Analysis →</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="card-right">
+                  <div className="conf-col">
+                    <div className="pick-label">Confidence</div>
                     <StarRating score={fields.confidenceScore} />
-                  </>
-                )}
-                <span className="view-link">View Analysis</span>
-              </div>
+                  </div>
+                  <div className="pick-block">
+                    <div className="pick-label">The Pick</div>
+                    <div className="pick-headline">{fields.playToLine}</div>
+                    <span className="ev-badge">{fields.evPercentage} EV</span>
+                    <span className="view-link">View Analysis →</span>
+                  </div>
+                </div>
+              )}
             </Link>
           );
         })}

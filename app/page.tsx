@@ -123,16 +123,21 @@ export default async function Home() {
         .section-header { display: flex; flex-direction: column; align-items: center; padding: 40px 48px 24px; gap: 10px; }
         .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; color: var(--gray-muted); text-transform: uppercase; }
         .card-list { padding: 0 48px; }
-        .card { padding: 30px 0 30px 28px; border-bottom: 1px solid var(--border-subtle); border-left: 1px solid var(--jade); display: flex; align-items: flex-start; gap: 56px; color: inherit; }
+        .card { padding: 30px 28px 30px 28px; border-bottom: 1px solid var(--border-subtle); border-left: 1px solid var(--jade); display: flex; align-items: center; justify-content: space-between; gap: 48px; color: inherit; }
         .card:hover { background: rgba(74, 222, 128, 0.04); }
-        .card-left { flex: 1; min-width: 0; max-width: 620px; }
+        .card-left { flex: 1; min-width: 0; max-width: 680px; }
         .edge-no { font-size: 10px; font-weight: 600; color: var(--jade); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 10px; }
         .card-league { font-size: 12px; font-weight: 600; color: var(--cream); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 5px; }
         .card-title { font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 27px; line-height: 1.2; margin-bottom: 13px; color: var(--fg); }
         .card-teaser { font-family: var(--font-prose); font-size: 16px; color: var(--prose-fg); line-height: 1.6; margin-bottom: 18px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .play-stripe { display: inline-block; font-size: 12px; font-weight: 600; color: var(--jade); border-top: 2px solid var(--jade); border-bottom: 2px solid var(--jade); padding: 7px 15px; letter-spacing: 0.1em; text-transform: uppercase; }
-        .card-right { display: flex; flex-direction: column; align-items: flex-start; gap: 13px; flex-shrink: 0; padding-top: 26px; }
-        .ev-badge { background: var(--jade); color: var(--bg); font-size: 14px; font-weight: 600; padding: 6px 14px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; cursor: help; position: relative; }
+        .card-right { display: flex; flex-direction: row; align-items: center; gap: 32px; flex-shrink: 0; }
+        .conf-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .pick-block { display: flex; flex-direction: column; align-items: center; gap: 11px; min-width: 188px; padding-left: 32px; border-left: 1px solid var(--star-empty); }
+        .pick-label { font-size: 10px; font-weight: 600; color: var(--gray-muted); text-transform: uppercase; letter-spacing: 0.16em; }
+        .pick-headline { font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 25px; line-height: 1.1; color: var(--jade); text-align: center; }
+        .no-edge-headline { font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 20px; line-height: 1.15; color: var(--gray-muted); text-align: center; }
+        .ev-badge { background: var(--jade); color: var(--bg); font-size: 13px; font-weight: 600; padding: 5px 13px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; cursor: help; position: relative; }
         .no-edge-badge { background: transparent; color: var(--gray-muted); border: 1px solid var(--gray-muted); font-size: 11px; font-weight: 600; padding: 4px 11px; white-space: nowrap; letter-spacing: 0.08em; text-transform: uppercase; }
         .card.no-pick { border-left-color: var(--gray-muted); opacity: 0.92; }
         .no-pick-label { display: inline-block; font-size: 10px; font-weight: 600; color: var(--gray-muted); border-top: 2px solid var(--gray-muted); border-bottom: 2px solid var(--gray-muted); padding: 6px 14px; letter-spacing: 0.1em; text-transform: uppercase; }
@@ -190,13 +195,13 @@ export default async function Home() {
           .hero-dek { font-size: 13px; letter-spacing: 0.24em; margin-top: 12px; }
           .section-header { padding: 28px 20px 16px; }
           .card-list { padding: 0 20px; }
-          .card { padding: 22px 0 22px 18px; flex-direction: column; gap: 14px; }
+          .card { padding: 22px 18px 22px 18px; flex-direction: column; align-items: flex-start; gap: 16px; }
           .card-left { max-width: none; }
           .card-title { font-size: 22px; }
           .card-teaser { display: none; }
-          /* Fix #5: tidy single badge row, view-link pushed right. */
-          .card-right { align-items: center; flex-direction: row; flex-wrap: wrap; gap: 10px 12px; width: 100%; padding-top: 0; }
-          .card-right .view-link { margin-left: auto; }
+          .card-right { flex-direction: row; align-items: center; gap: 22px; width: 100%; }
+          .pick-block { align-items: flex-start; padding-left: 22px; min-width: 0; margin-left: auto; text-align: left; }
+          .pick-headline, .no-edge-headline { text-align: left; font-size: 21px; }
           /* Fix #2: hover-only tooltips are invisible/clipped on phones — hide them. */
           .metric-tip { display: none !important; }
           .ev-badge, .star-rating { cursor: default; }
@@ -331,28 +336,34 @@ export default async function Home() {
                 {pick.fields.analysisParagraph1 && (
                   <div className="card-teaser">{getTeaserFromRichText(pick.fields.analysisParagraph1)}</div>
                 )}
-                {isNoPick ? (
-                  <div className="no-pick-label">Market priced fairly</div>
-                ) : (
-                  <div className="play-stripe">{pick.fields.playToLine}</div>
-                )}
               </div>
-              <div className="card-right">
-                {isNoPick ? (
-                  <span className="no-edge-badge">No Edge</span>
-                ) : (
-                  <>
+              {isNoPick ? (
+                <div className="card-right">
+                  <div className="pick-block">
+                    <div className="pick-label">No Edge</div>
+                    <div className="no-edge-headline">Market priced fairly</div>
+                    <span className="view-link">View Analysis →</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="card-right">
+                  <div className="conf-col">
+                    <div className="pick-label">Confidence</div>
+                    <StarRating score={pick.fields.confidenceScore} />
+                  </div>
+                  <div className="pick-block">
+                    <div className="pick-label">The Pick</div>
+                    <div className="pick-headline">{pick.fields.playToLine}</div>
                     <span className="ev-badge">
                       {pick.fields.evPercentage} EV
                       <span className="metric-tip">
                         <strong>EV (Expected Value)</strong> is the model&apos;s edge against the sportsbook&apos;s price. <strong>+10% EV</strong> means a $100 bet returns $10 in expected profit over the long run, assuming the model is calibrated. Big underdog plays at long odds (e.g. +500 or more) tend to show very high EV but should be paired with high confidence (★) before sizing up.
                       </span>
                     </span>
-                    <StarRating score={pick.fields.confidenceScore} />
-                  </>
-                )}
-                <span className="view-link">View Analysis</span>
-              </div>
+                    <span className="view-link">View Analysis →</span>
+                  </div>
+                </div>
+              )}
             </Link>
           );
         })}
