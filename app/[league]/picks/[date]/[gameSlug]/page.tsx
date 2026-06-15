@@ -2,6 +2,7 @@ import { createClient } from 'contentful';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import ShareButtons from './ShareButtons';
 
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID!,
@@ -9,6 +10,9 @@ const client = createClient({
 });
 
 const SITE_URL = 'https://sharpspots.vercel.app';
+
+// Public-facing brand domain for share links (NOT the vercel.app canonical).
+const SHARE_DOMAIN = 'https://sharpspots.com';
 
 export const dynamic = 'force-dynamic';
 
@@ -155,6 +159,15 @@ export default async function GamePage({ params }: PageProps) {
           {pick.analysisParagraph1 && documentToReactComponents(pick.analysisParagraph1)}
           {pick.analysisParagraph2 && documentToReactComponents(pick.analysisParagraph2)}
         </article>
+
+        {pick.pageType === 'pick' && (
+          <ShareButtons
+            url={`${SHARE_DOMAIN}/${league}/picks/${date}/${gameSlug}`}
+            play={pick.playToLine || pick.recommendedPlay || pick.title}
+            ev={pick.evPercentage || ''}
+            title={pick.title || ''}
+          />
+        )}
 
         <footer className="pick-footer">
           <p style={{ marginBottom: 12 }}>
