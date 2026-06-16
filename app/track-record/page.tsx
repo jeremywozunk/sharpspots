@@ -294,10 +294,52 @@ export default async function TrackRecordPage({ searchParams }: PageProps) {
           .summary-value { font-size: 22px; }
           .tr-filters { padding: 10px 20px 12px; }
           .range-select { margin-left: 0; }
-          .tr-table-wrap { padding: 0 20px 24px; }
-          .tr-table th, .tr-table td { padding: 12px 8px; font-size: 13px; }
-          .tr-table .col-line, .tr-table .col-stars { display: none; }
+          .tr-table-wrap { padding: 0 16px 24px; }
           .disclaimer { padding: 18px 20px 36px; }
+
+          /* --- Mobile: render each row as a stacked card (no more clipped columns) --- */
+          .tr-table { border: none; }
+          .tr-table thead { display: none; } /* column headers do not apply to cards */
+          .tr-table tr {
+            display: block;
+            position: relative;
+            background: var(--bg-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+          }
+          .tr-table tr:hover td { background: transparent; } /* disable row-hover tint in card mode */
+          .tr-table td {
+            display: block;
+            padding: 0;
+            border-bottom: none;
+            font-size: 14px;
+            white-space: normal;
+            width: auto !important;
+          }
+          .tr-table tr:last-child td { border-bottom: none; }
+
+          /* Line 1: game title (link) */
+          .tr-table .col-game { font-size: 13px; color: var(--gray-muted); margin-bottom: 6px; padding-right: 56px; }
+          .tr-table .col-game a { color: var(--gray-muted); }
+
+          /* Line 2: the pick itself — the headline of the card */
+          .tr-table .col-pick { font-size: 17px; font-weight: 600; line-height: 1.25; white-space: normal; margin-bottom: 10px; }
+
+          /* Line/odds + stars come back (were hidden before) as a small meta line */
+          .tr-table .col-line { font-size: 12px; color: var(--gray-muted); display: inline; }
+          .tr-table .col-stars { font-size: 13px; display: inline; margin-left: 8px; }
+
+          /* Bottom meta row: Date · Sport on the left */
+          .tr-table .col-date,
+          .tr-table .col-sport { display: inline; font-size: 12px; }
+          .tr-table .col-date::after { content: ' · '; color: var(--border-subtle); }
+
+          /* Result pill sits top-right of the card; Units below */
+          .tr-table .col-result { position: absolute; top: 14px; right: 16px; }
+          .tr-table .col-units { display: block; text-align: left; margin-top: 8px; font-size: 15px; }
+          .tr-table .col-units::before { content: 'Net: '; color: var(--gray-muted); font-weight: 400; font-size: 12px; }
         }
       `}</style>
 

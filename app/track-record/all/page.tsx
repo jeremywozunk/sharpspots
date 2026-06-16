@@ -319,11 +319,50 @@ export default async function AllPicksPage({ searchParams }: PageProps) {
           .ap-filters { padding: 0 20px 10px; }
           .range-select { margin-left: 0; }
           .ap-meta-row { padding: 4px 20px 10px; }
-          .ap-table-wrap { padding: 0 20px 18px; }
-          .ap-table th, .ap-table td { padding: 9px 8px; font-size: 11px; }
-          .ap-table .col-line, .ap-table .col-stars { display: none; }
+          .ap-table-wrap { padding: 0 16px 18px; }
           .pagination { padding: 14px 20px 32px; }
           .disclaimer { padding: 8px 20px 36px; }
+
+          /* --- Mobile: render each row as a stacked card (no more clipped columns) --- */
+          .ap-table { border: none; }
+          .ap-table thead { display: none; }
+          .ap-table tr {
+            display: block;
+            position: relative;
+            background: var(--bg-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+          }
+          .ap-table tr:hover td { background: transparent; }
+          .ap-table td {
+            display: block;
+            padding: 0;
+            border-bottom: none;
+            font-size: 13px;
+            white-space: normal;
+            width: auto !important;
+          }
+          .ap-table tr:last-child td { border-bottom: none; }
+
+          /* Pick (the game-title link) is the card headline */
+          .ap-table .col-pick { font-size: 16px; font-weight: 600; line-height: 1.25; padding-right: 56px; margin-bottom: 8px; }
+          .ap-table .col-pick a { color: var(--fg); }
+
+          /* Line/odds + stars come back as a small meta line */
+          .ap-table .col-line { font-size: 12px; color: var(--gray-muted); display: inline; }
+          .ap-table .col-stars { font-size: 13px; display: inline; margin-left: 8px; }
+
+          /* Bottom meta row */
+          .ap-table .col-date,
+          .ap-table .col-sport { display: inline; font-size: 12px; }
+          .ap-table .col-date::after { content: ' · '; color: var(--border-subtle); }
+
+          /* Result pill top-right; Units below the meta line */
+          .ap-table .col-result { position: absolute; top: 14px; right: 16px; }
+          .ap-table .col-units { display: block; text-align: left; margin-top: 8px; font-size: 14px; }
+          .ap-table .col-units::before { content: 'Net: '; color: var(--gray-muted); font-weight: 400; font-size: 12px; }
         }
       `}</style>
 
