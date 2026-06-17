@@ -183,6 +183,18 @@ export default async function TrackRecordPage({ searchParams }: PageProps) {
   // Filter out 1-star picks per Spec §4 + §5 + only graded
   const graded = allPicks.filter((p) => (p.fields.confidenceScore ?? 0) >= 2 && normResult(p.fields.result));
 
+  // Results ticker: most recent graded picks (graded is ordered -gameDate from CMA).
+  const tickerPicks = graded.slice(0, 22).map((p) => {
+    const r = normResult(p.fields.result);
+    const code = r === 'W' ? 'W' : r === 'Push' ? 'P' : 'L';
+    const d = p.fields.gameDate ? new Date(p.fields.gameDate) : null;
+    const date = d ? `${d.getUTCMonth() + 1}/${d.getUTCDate()}` : '';
+    // Compact label: strip trailing odds (e.g. "Uruguay -1.25 AH +107" -> "Uruguay -1.25 AH")
+    const raw = (p.fields.recommendedPlay || p.fields.playToLine || '').trim();
+    const team = raw.replace(/\s+[+-]\d{2,4}\s*$/, '').trim() || raw;
+    return { date, team, code };
+  });
+
   // Per-sport counts (always full sample, regardless of date range — for chip labels)
   const sportCounts: Record<string, number> = { all: graded.length };
   graded.forEach((p) => {
@@ -209,8 +221,8 @@ export default async function TrackRecordPage({ searchParams }: PageProps) {
   const rows = visible.slice(0, RENDER_CAP);
   const hiddenCount = Math.max(0, visible.length - RENDER_CAP);
 
-  const lastUpdated = new Date().toLocaleString('en-US', {
-    timeZone: 'America/New_York', dateStyle: 'medium', timeStyle: 'short',
+  const lastUpdated = new Date().toLocaleDateString('en-US', {
+    timeZone: 'America/New_York', month: 'short', day: 'numeric', year: 'numeric',
   });
 
   // Build filter chip hrefs preserving the other dimension
@@ -234,9 +246,24 @@ export default async function TrackRecordPage({ searchParams }: PageProps) {
   return (
     <>
       <style>{`
-        .tr-hero { padding: 80px 48px 36px; text-align: center; }
+        .tr-hero { padding: 80px 48px 24px; text-align: center; }
         .tr-headline { font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 72px; line-height: 1.02; color: var(--jade); letter-spacing: -0.01em; }
-        .tr-meta { font-family: var(--font-ui); font-size: 11px; color: var(--gray-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 22px; }
+        .tr-meta { font-family: 'Space Grotesk', var(--font-ui); font-weight: 500; font-size: 13px; color: #ffffff; letter-spacing: 0.14em; text-transform: uppercase; margin-top: 16px; }
+        .tr-ticker-wrap { position: relative; overflow: hidden; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); background: var(--bg-2); padding: 11px 0; margin-bottom: 8px; }
+        .tr-ticker-wrap::before, .tr-ticker-wrap::after { content: ''; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2; pointer-events: none; }
+        .tr-ticker-wrap::before { left: 0; background: linear-gradient(90deg, var(--bg-2), transparent); }
+        .tr-ticker-wrap::after { right: 0; background: linear-gradient(270deg, var(--bg-2), transparent); }
+        .tr-ticker { display: inline-flex; white-space: nowrap; animation: tr-scroll 60s linear infinite; }
+        .tr-ticker-wrap:hover .tr-ticker { animation-play-state: paused; }
+        @keyframes tr-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .tr-chip { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 500; padding: 0 20px; display: inline-flex; align-items: center; gap: 9px; border-right: 1px solid #18241d; }
+        .tr-chip .tc-date { color: #5f7068; font-size: 10.5px; letter-spacing: 0.02em; }
+        .tr-chip .tc-team { color: var(--cream); letter-spacing: 0.02em; }
+        .tr-chip .tc-res { font-weight: 600; width: 16px; text-align: center; border-radius: 3px; font-size: 11px; padding: 1px 0; }
+        .tr-chip .tc-res.W { color: var(--bg); background: var(--jade); }
+        .tr-chip .tc-res.L { color: var(--bg); background: #e2655f; }
+        .tr-chip .tc-res.P { color: var(--bg); background: var(--gray-muted); }
+        @media (prefers-reduced-motion: reduce) { .tr-ticker { animation: none; } }
 
         .tr-summary { padding: 8px 48px 32px; }
         .summary-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
@@ -345,8 +372,22 @@ export default async function TrackRecordPage({ searchParams }: PageProps) {
 
       <div className="tr-hero">
         <h1 className="tr-headline">The Track Record.</h1>
-        <div className="tr-meta">Last updated · {lastUpdated} ET</div>
+        <div className="tr-meta">Last updated {lastUpdated}</div>
       </div>
+
+      {tickerPicks.length > 0 && (
+        <div className="tr-ticker-wrap" aria-label="Recent pick results">
+          <div className="tr-ticker">
+            {[...tickerPicks, ...tickerPicks].map((t, i) => (
+              <span className="tr-chip" key={i}>
+                {t.date && <span className="tc-date">{t.date}</span>}
+                <span className="tc-team">{t.team}</span>
+                <span className={`tc-res ${t.code}`}>{t.code}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="tr-summary">
         <div className="summary-grid">

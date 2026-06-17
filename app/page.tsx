@@ -115,11 +115,10 @@ export default async function Home() {
   return (
     <>
       <style>{`
-        .hero { padding: 72px 48px 48px; border-bottom: 1px solid var(--border-subtle); text-align: center; }
-        .hero h1 { font-family: var(--font-brand); font-size: 54px; line-height: 0.95; margin: 0; color: var(--fg); font-weight: 400; letter-spacing: 0.04em; text-transform: uppercase; }
+        .hero { padding: 38px 48px 26px; border-bottom: 1px solid var(--border-subtle); text-align: center; }
+        .hero h1 { font-family: var(--font-brand); font-size: 40px; line-height: 1; margin: 0; color: var(--fg); font-weight: 400; letter-spacing: 0.04em; text-transform: uppercase; }
         .hero h1 em { font-style: normal; color: var(--jade); }
-        .hero-dek { font-family: var(--font-brand); font-size: 18px; color: var(--fg); letter-spacing: 0.32em; margin-top: 16px; text-transform: uppercase; font-weight: 400; }
-        .hero p { font-size: 14px; color: var(--gray-muted); line-height: 1.65; max-width: 580px; margin: 14px auto 0; }
+        .hero-sub { font-family: var(--font-ui); font-size: 11px; color: var(--gray-muted); letter-spacing: 0.16em; margin-top: 12px; text-transform: uppercase; }
         .section-header { display: flex; flex-direction: column; align-items: center; padding: 40px 48px 24px; gap: 10px; }
         .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; color: var(--gray-muted); text-transform: uppercase; }
         .card-list { padding: 0 48px; }
@@ -147,12 +146,15 @@ export default async function Home() {
         .ev-badge:hover .metric-tip, .star-rating:hover .metric-tip { opacity: 1; pointer-events: auto; }
         .view-link { font-size: 13px; color: var(--cream); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
         .empty { padding: 48px; font-family: var(--font-prose); font-style: italic; color: var(--gray-muted); font-size: 15px; text-align: center; }
-        .hiw { padding: 80px 48px; background: var(--bg-2); border-top: 1px solid var(--border-subtle); margin-top: 60px; }
-        .hiw-title { font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 28px; margin-bottom: 36px; color: var(--fg); text-align: center; }
-        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1100px; margin: 0 auto; }
-        .step { background: var(--bg); border: 1px solid var(--border-subtle); border-top: 2px solid var(--jade); padding: 32px 28px; }
-        .step-num { font-family: var(--font-brand); font-size: 22px; color: var(--jade); margin-bottom: 14px; letter-spacing: 0.12em; }
-        .step-text { font-family: var(--font-prose); font-size: 14px; color: var(--fg); line-height: 1.65; }
+        .hiw { padding: 64px 48px; background: var(--bg-2); border-top: 1px solid var(--border-subtle); }
+        .hiw-title { font-family: var(--font-brand); font-weight: 400; font-size: 38px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 32px; color: var(--fg); text-align: center; line-height: 1; }
+        .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 1000px; margin: 0 auto; }
+        .pillar { background: var(--bg); border: 1px solid var(--border-subtle); border-top: 2px solid var(--jade); padding: 26px 24px; }
+        .pillar-ic { width: 24px; height: 24px; color: var(--jade); display: block; margin-bottom: 13px; }
+        .pillar-name { font-family: var(--font-ui); font-size: 13px; font-weight: 600; letter-spacing: 0.05em; color: var(--jade); text-transform: uppercase; margin-bottom: 11px; }
+        .pillar-text { font-family: var(--font-prose); font-size: 15px; color: var(--prose-fg); line-height: 1.62; }
+        .pillar-foot { font-family: var(--font-prose); font-style: italic; font-size: 14px; color: var(--gray-muted); text-align: center; max-width: 680px; margin: 28px auto 0; line-height: 1.65; }
+        .pillar-foot strong { color: var(--jade); font-style: normal; font-weight: 500; }
         .confidence-scale { padding: 36px 48px 32px; border-bottom: 1px solid var(--border-subtle); background: var(--bg); }
         .cs-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; max-width: 1100px; margin-left: auto; margin-right: auto; }
         .cs-eyebrow { font-size: 10px; color: var(--fg); letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; }
@@ -191,8 +193,8 @@ export default async function Home() {
         .scale-bridge strong { color: var(--jade); font-style: normal; font-weight: 600; }
         @media (max-width: 768px) {
           .hero { padding: 48px 20px 36px; }
-          .hero h1 { font-size: 38px; }
-          .hero-dek { font-size: 13px; letter-spacing: 0.24em; margin-top: 12px; }
+          .hero h1 { font-size: 32px; }
+          .hero-sub { font-size: 10px; letter-spacing: 0.12em; margin-top: 10px; }
           .section-header { padding: 28px 20px 16px; }
           .card-list { padding: 0 20px; }
           .card { padding: 22px 18px 22px 18px; flex-direction: column; align-items: flex-start; gap: 16px; }
@@ -205,8 +207,9 @@ export default async function Home() {
           /* Fix #2: hover-only tooltips are invisible/clipped on phones — hide them. */
           .metric-tip { display: none !important; }
           .ev-badge, .star-rating { cursor: default; }
-          .hiw { padding: 56px 20px; }
-          .steps { grid-template-columns: 1fr; gap: 18px; }
+          .hiw { padding: 48px 20px; }
+          .hiw-title { font-size: 30px; }
+          .pillars { grid-template-columns: 1fr; gap: 14px; }
           .confidence-scale { padding: 28px 20px 24px; }
           .cs-header { margin-bottom: 14px; }
           .cs-hint { display: none; }
@@ -227,12 +230,64 @@ export default async function Home() {
 
       <div className="hero">
         <h1>
-          Sports betting
-          <br />
-          <em>analysis</em>
+          Sports betting <em>analysis</em>
         </h1>
-        <div className="hero-dek">Driven by artificial intelligence</div>
-        <p>Every game on today&apos;s slate is analyzed and listed below in chronological order.</p>
+        <div className="hero-sub">Today&apos;s slate, analyzed and ranked below</div>
+      </div>
+
+      <div className="section-header">
+        <div className="section-label">Today&apos;s Games</div>
+      </div>
+
+      <div className="card-list">
+        {picks.length === 0 && (
+          <div className="empty">Today&apos;s edges drop each morning — check back soon.</div>
+        )}
+        {picks.map((pick, idx) => {
+          const isNoPick = pick.fields.pageType === 'no-pick';
+          const timeStr = getGameTimeDisplay(pick.fields.tipoffIso || pick.fields.gameDate);
+          return (
+            <Link key={pick.sys.id} href={buildGameUrl(pick)} className={`card${isNoPick ? ' no-pick' : ''}`}>
+              <div className="card-left">
+                <div className="edge-no">
+                  {isNoPick ? 'No Edge' : `Edge No. ${String(idx + 1).padStart(3, '0')}`}
+                </div>
+                <div className="card-league">{(pick.fields.league || '').toUpperCase()} - {timeStr}</div>
+                <div className="card-title">{pick.fields.title}</div>
+                {pick.fields.analysisParagraph1 && (
+                  <div className="card-teaser">{getTeaserFromRichText(pick.fields.analysisParagraph1)}</div>
+                )}
+              </div>
+              {isNoPick ? (
+                <div className="card-right">
+                  <div className="pick-block">
+                    <div className="pick-label">No Edge</div>
+                    <div className="no-edge-headline">Market priced fairly</div>
+                    <span className="view-link">View Analysis →</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="card-right">
+                  <div className="conf-col">
+                    <div className="pick-label">Confidence</div>
+                    <StarRating score={pick.fields.confidenceScore} />
+                  </div>
+                  <div className="pick-block">
+                    <div className="pick-label">The Pick</div>
+                    <div className="pick-headline">{pick.fields.playToLine}</div>
+                    <span className="ev-badge">
+                      {pick.fields.evPercentage} EV
+                      <span className="metric-tip">
+                        <strong>EV (Expected Value)</strong> is the model&apos;s edge against the sportsbook&apos;s price. <strong>+10% EV</strong> means a $100 bet returns $10 in expected profit over the long run, assuming the model is calibrated. Big underdog plays at long odds (e.g. +500 or more) tend to show very high EV but should be paired with high confidence (★) before sizing up.
+                      </span>
+                    </span>
+                    <span className="view-link">View Analysis →</span>
+                  </div>
+                </div>
+              )}
+            </Link>
+          );
+        })}
       </div>
 
       <section className="confidence-scale" aria-label="How to read confidence ratings">
@@ -310,81 +365,32 @@ export default async function Home() {
       <div className="scale-bridge">
         <p>
           <strong>EV is the size of the edge. Stars are the strength of the signal</strong>
-          {' '}— both surfaced by AI-driven Python models that re-evaluate the market every morning.
+          {' '}— both surfaced by AI-driven models that re-evaluate the market every morning.
         </p>
       </div>
 
-      <div className="section-header">
-        <div className="section-label">Today&apos;s Games</div>
-      </div>
-
-      <div className="card-list">
-        {picks.length === 0 && (
-          <div className="empty">Today&apos;s edges drop each morning — check back soon.</div>
-        )}
-        {picks.map((pick, idx) => {
-          const isNoPick = pick.fields.pageType === 'no-pick';
-          const timeStr = getGameTimeDisplay(pick.fields.tipoffIso || pick.fields.gameDate);
-          return (
-            <Link key={pick.sys.id} href={buildGameUrl(pick)} className={`card${isNoPick ? ' no-pick' : ''}`}>
-              <div className="card-left">
-                <div className="edge-no">
-                  {isNoPick ? 'No Edge' : `Edge No. ${String(idx + 1).padStart(3, '0')}`}
-                </div>
-                <div className="card-league">{(pick.fields.league || '').toUpperCase()} - {timeStr}</div>
-                <div className="card-title">{pick.fields.title}</div>
-                {pick.fields.analysisParagraph1 && (
-                  <div className="card-teaser">{getTeaserFromRichText(pick.fields.analysisParagraph1)}</div>
-                )}
-              </div>
-              {isNoPick ? (
-                <div className="card-right">
-                  <div className="pick-block">
-                    <div className="pick-label">No Edge</div>
-                    <div className="no-edge-headline">Market priced fairly</div>
-                    <span className="view-link">View Analysis →</span>
-                  </div>
-                </div>
-              ) : (
-                <div className="card-right">
-                  <div className="conf-col">
-                    <div className="pick-label">Confidence</div>
-                    <StarRating score={pick.fields.confidenceScore} />
-                  </div>
-                  <div className="pick-block">
-                    <div className="pick-label">The Pick</div>
-                    <div className="pick-headline">{pick.fields.playToLine}</div>
-                    <span className="ev-badge">
-                      {pick.fields.evPercentage} EV
-                      <span className="metric-tip">
-                        <strong>EV (Expected Value)</strong> is the model&apos;s edge against the sportsbook&apos;s price. <strong>+10% EV</strong> means a $100 bet returns $10 in expected profit over the long run, assuming the model is calibrated. Big underdog plays at long odds (e.g. +500 or more) tend to show very high EV but should be paired with high confidence (★) before sizing up.
-                      </span>
-                    </span>
-                    <span className="view-link">View Analysis →</span>
-                  </div>
-                </div>
-              )}
-            </Link>
-          );
-        })}
-      </div>
-
       <div className="hiw">
-        <div className="hiw-title">How SharpSpots works</div>
-        <div className="steps">
-          <div className="step">
-            <div className="step-num">01</div>
-            <div className="step-text">We scan every game across all major leagues every morning.</div>
+        <div className="hiw-title">How we find a mispriced line</div>
+        <div className="pillars">
+          <div className="pillar">
+            <svg className="pillar-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
+            <div className="pillar-name">Statistical</div>
+            <div className="pillar-text">We project every game from team-strength ratings and recent form, then compare our number against the market&apos;s price.</div>
           </div>
-          <div className="step">
-            <div className="step-num">02</div>
-            <div className="step-text">Our three-pillar model finds where the sportsbook is mispriced.</div>
+          <div className="pillar">
+            <svg className="pillar-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg>
+            <div className="pillar-name">Market Signal</div>
+            <div className="pillar-text">We watch where the sharp money sits, flagging lines the books have priced softer than the rest of the market.</div>
           </div>
-          <div className="step">
-            <div className="step-num">03</div>
-            <div className="step-text">You get the edge, explained in plain language.</div>
+          <div className="pillar">
+            <svg className="pillar-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <div className="pillar-name">Situational</div>
+            <div className="pillar-text">Travel, rest, altitude, and motivation — the context the raw numbers miss — sharpen the final read.</div>
           </div>
         </div>
+        <p className="pillar-foot">
+          Our <strong>mathematical models</strong> weigh these signals together to estimate a fair price, then measure it against what the sportsbook is offering. The more the signals line up, the higher the star rating. We surface a play only when the price looks genuinely wrong — and every pick rated <strong>two stars or higher</strong> goes on the record, win or lose.
+        </p>
       </div>
     </>
   );
